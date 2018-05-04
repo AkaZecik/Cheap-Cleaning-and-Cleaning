@@ -89,7 +89,7 @@ public class ApplicationManager extends Application {
             handleInput();
 
             for (int loops = 0; loops < maxSkippedFrames && System.nanoTime() > nextTick; ++loops, nextTick += tickInterval) {
-                System.out.println(Logger.getReadableTime());
+                //System.out.println(System.nanoTime());
                 update();
             }
 
