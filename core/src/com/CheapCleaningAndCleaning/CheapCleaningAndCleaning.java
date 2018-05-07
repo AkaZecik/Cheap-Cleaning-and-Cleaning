@@ -30,30 +30,12 @@ public class CheapCleaningAndCleaning extends ApplicationAdapter {
         long deltaTime = 10000000;
         while (accumulator >= deltaTime) {
             //physics
-            ArrayList<Integer> pressedKeys = handleInput();
-            currentGameState.update(pressedKeys);
+            currentGameState.update();
 
             accumulator -= deltaTime;
             time += deltaTime;
         }
         //render
         currentGameState.renderImage();
-    }
-
-    private ArrayList<Integer> handleInput() {
-        ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            pressedKeys.add(Input.Keys.A);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            pressedKeys.add(Input.Keys.D);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            pressedKeys.add(Input.Keys.W);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            pressedKeys.add(Input.Keys.S);
-        }
-        return pressedKeys;
     }
 }

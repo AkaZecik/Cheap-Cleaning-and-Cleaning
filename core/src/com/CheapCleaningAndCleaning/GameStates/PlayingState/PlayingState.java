@@ -14,20 +14,18 @@ public class PlayingState implements GameState {
     private int playerPositionY = 0;
 
     @Override
-    public void update(ArrayList<Integer> pressedKeys) {
-        for (Integer i : pressedKeys) {
-            if (i == Input.Keys.A) {
-                playerPositionX--;
-            }
-            if (i == Input.Keys.D) {
-                playerPositionX++;
-            }
-            if (i == Input.Keys.W) {
-                playerPositionY++;
-            }
-            if (i == Input.Keys.S) {
-                playerPositionY--;
-            }
+    public void update() {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            playerPositionX--;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            playerPositionX++;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            playerPositionY++;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            playerPositionY--;
         }
     }
 
