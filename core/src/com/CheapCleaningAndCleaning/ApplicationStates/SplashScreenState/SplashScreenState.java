@@ -19,7 +19,7 @@ public class SplashScreenState extends AbstractApplicationState {
 
     @Override
     public void update(Game entity) {
-
+        super.update(entity);
     }
 
     @Override

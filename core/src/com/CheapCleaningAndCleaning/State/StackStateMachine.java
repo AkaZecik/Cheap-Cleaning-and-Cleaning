@@ -44,6 +44,10 @@ public class StackStateMachine<E, S extends State<E>> implements StateMachine<E,
     }
 
     public void changeState(S newState, boolean replaceCurrentState) {
+        if (newState == null) {
+            throw new NullPointerException("newState == null");
+        }
+
         if (replaceCurrentState) {
             if (stateStack.size > 0) {
                 stateStack.pop();
@@ -51,6 +55,7 @@ public class StackStateMachine<E, S extends State<E>> implements StateMachine<E,
         }
 
         stateStack.add(newState);
+        getCurrentState().enter(owner);
     }
 
     @Override
@@ -65,12 +70,17 @@ public class StackStateMachine<E, S extends State<E>> implements StateMachine<E,
 
     @Override
     public void setInitialState(S state) {
+        if (state == null) {
+            throw new NullPointerException("state == null");
+        }
+
         if (stateStack == null) {
             stateStack = new Array<>();
         }
 
         stateStack.clear();
         stateStack.add(state);
+        getCurrentState().enter(owner);
     }
 
     @Override
