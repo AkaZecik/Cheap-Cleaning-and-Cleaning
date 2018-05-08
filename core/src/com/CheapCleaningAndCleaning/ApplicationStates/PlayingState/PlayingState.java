@@ -45,6 +45,7 @@ public class PlayingState extends AbstractApplicationState {
         });
 
         stage.addActor(player);
+        stage.setKeyboardFocus(player);
     }
 
     @Override
