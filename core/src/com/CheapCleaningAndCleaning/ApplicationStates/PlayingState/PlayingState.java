@@ -1,10 +1,11 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState;
 
-import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationState;
+import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
 import com.badlogic.gdx.Game;
 
-public class PlayingState implements ApplicationState {
+public class PlayingState extends AbstractApplicationState {
     private PlayingState() {
+
     }
 
     public static PlayingState getInstance() {
@@ -13,7 +14,7 @@ public class PlayingState implements ApplicationState {
 
     @Override
     public void enter(Game entity) {
-
+        super.enter(entity);
     }
 
     @Override
@@ -23,12 +24,12 @@ public class PlayingState implements ApplicationState {
 
     @Override
     public void exit(Game entity) {
-
+        super.exit(entity);
     }
 
     @Override
     public void render() {
-
+        super.render();
     }
 
     private static class InstanceHolder {

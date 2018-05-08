@@ -1,9 +1,9 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState;
 
-import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationState;
+import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
 import com.badlogic.gdx.Game;
 
-public class MainMenuState implements ApplicationState {
+public class MainMenuState extends AbstractApplicationState {
     private MainMenuState() {
 
     }
@@ -14,7 +14,7 @@ public class MainMenuState implements ApplicationState {
 
     @Override
     public void enter(Game entity) {
-
+        super.enter(entity);
     }
 
     @Override
@@ -24,12 +24,12 @@ public class MainMenuState implements ApplicationState {
 
     @Override
     public void exit(Game entity) {
-
+        super.exit(entity);
     }
 
     @Override
     public void render() {
-
+        super.render();
     }
 
     private static class InstanceHolder {
