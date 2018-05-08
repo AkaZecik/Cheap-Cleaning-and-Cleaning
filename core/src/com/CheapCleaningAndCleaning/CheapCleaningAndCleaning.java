@@ -3,10 +3,6 @@ package com.CheapCleaningAndCleaning;
 import com.CheapCleaningAndCleaning.GameStates.GameState;
 import com.CheapCleaningAndCleaning.GameStates.PlayingState.PlayingState;
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-
-import java.util.ArrayList;
 
 public class CheapCleaningAndCleaning extends ApplicationAdapter {
     GameState currentGameState;
@@ -26,6 +22,9 @@ public class CheapCleaningAndCleaning extends ApplicationAdapter {
         long newTime = System.nanoTime();
         long frameTime = newTime - currentSystemTime;
         currentSystemTime = newTime;
+        if (frameTime > 250000000) {
+            frameTime = 250000000;
+        }
         accumulator += frameTime;
         long deltaTime = 10000000;
         while (accumulator >= deltaTime) {
