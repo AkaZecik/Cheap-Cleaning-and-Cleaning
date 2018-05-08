@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 public class PlayingState extends AbstractApplicationState {
-    Player player = new Player();
+    private Player player = new Player();
 
     private PlayingState() {
 
