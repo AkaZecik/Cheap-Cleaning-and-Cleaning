@@ -1,6 +1,7 @@
 package com.CheapCleaningAndCleaning.ApplicationStates;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class ApplicationStatesManager {
         getLast().update();
     }
 
-    public void renderImage() {
-        getLast().renderImage();
+    public void render(SpriteBatch batch) {
+        getLast().render(batch);
     }
 }

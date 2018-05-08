@@ -24,11 +24,8 @@ public class Player extends GameObject {
     }
 
     @Override
-    public void draw() {
-        SpriteBatch batch = new SpriteBatch();
+    public void draw(SpriteBatch batch) {
         BitmapFont font = new BitmapFont();
-        batch.begin();
         font.draw(batch, "x: " + x + " y: " + y, 200, 200);
-        batch.end();
     }
 }

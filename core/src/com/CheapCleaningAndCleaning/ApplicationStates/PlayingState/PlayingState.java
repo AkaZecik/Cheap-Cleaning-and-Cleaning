@@ -5,6 +5,7 @@ import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.G
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 
@@ -31,12 +32,12 @@ public class PlayingState implements ApplicationState {
     }
 
     @Override
-    public void renderImage() {
+    public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         for (GameObject gameObject : gameObjects) {
-            gameObject.draw();
+            gameObject.draw(batch);
         }
     }
 
