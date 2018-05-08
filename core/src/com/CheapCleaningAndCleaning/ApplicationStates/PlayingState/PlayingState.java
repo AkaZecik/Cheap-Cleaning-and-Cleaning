@@ -1,17 +1,9 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationState;
-import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.GameObject;
-import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player.Player;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import java.util.ArrayList;
+import com.badlogic.gdx.Game;
 
 public class PlayingState implements ApplicationState {
-    private ArrayList<GameObject> gameObjects = new ArrayList<>();
-
     private PlayingState() {
     }
 
@@ -20,25 +12,23 @@ public class PlayingState implements ApplicationState {
     }
 
     @Override
-    public void update() {
-        for (GameObject gameObject : gameObjects) {
-            gameObject.update();
-        }
+    public void enter(Game entity) {
+
     }
 
     @Override
-    public void enter() {
-        gameObjects.add(new Player());
+    public void update(Game entity) {
+
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    public void exit(Game entity) {
 
-        for (GameObject gameObject : gameObjects) {
-            gameObject.draw(batch);
-        }
+    }
+
+    @Override
+    public void render() {
+
     }
 
     private static class InstanceHolder {

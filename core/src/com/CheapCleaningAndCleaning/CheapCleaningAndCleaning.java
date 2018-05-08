@@ -1,24 +1,18 @@
 package com.CheapCleaningAndCleaning;
 
-import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStatesManager;
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
+import com.badlogic.gdx.Game;
 
-public class CheapCleaningAndCleaning extends ApplicationAdapter {
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-    private ApplicationStatesManager asm;
+public class CheapCleaningAndCleaning extends Game {
+    private ApplicationStackStateMachine stateStack;
     private long time = 0;
     private long currentSystemTime;
     private long accumulator = 0;
 
     @Override
     public void create() {
-        asm = new ApplicationStatesManager();
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
-        batch = new SpriteBatch();
+        stateStack = new ApplicationStackStateMachine(this, PlayingState.getInstance());
         currentSystemTime = System.nanoTime();
     }
 
@@ -34,20 +28,12 @@ public class CheapCleaningAndCleaning extends ApplicationAdapter {
         long deltaTime = 10_000_000;
         while (accumulator >= deltaTime) {
             //physics
-            asm.update();
+            stateStack.update();
 
             accumulator -= deltaTime;
             time += deltaTime;
         }
         //render
-        batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        asm.render(batch);
-        batch.end();
-    }
-
-    @Override
-    public void dispose() {
-        batch.dispose();
+        stateStack.render();
     }
 }

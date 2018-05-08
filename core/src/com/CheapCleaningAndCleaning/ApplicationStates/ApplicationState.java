@@ -1,9 +1,8 @@
 package com.CheapCleaningAndCleaning.ApplicationStates;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.CheapCleaningAndCleaning.State.State;
+import com.badlogic.gdx.Game;
 
-public interface ApplicationState {
-    void enter();
-    void update();
-    void render(SpriteBatch batch);
+public interface ApplicationState extends State<Game> {
+    void render();
 }

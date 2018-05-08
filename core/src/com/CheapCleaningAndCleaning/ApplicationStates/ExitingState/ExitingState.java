@@ -1,6 +1,7 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.ExitingState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationState;
+import com.badlogic.gdx.Game;
 
 public class ExitingState implements ApplicationState {
     private ExitingState() {
@@ -12,17 +13,22 @@ public class ExitingState implements ApplicationState {
     }
 
     @Override
-    public void enter() {
+    public void enter(Game entity) {
 
     }
 
     @Override
-    public void update() {
+    public void update(Game entity) {
 
     }
 
     @Override
-    public void renderImage() {
+    public void exit(Game entity) {
+
+    }
+
+    @Override
+    public void render() {
 
     }
 

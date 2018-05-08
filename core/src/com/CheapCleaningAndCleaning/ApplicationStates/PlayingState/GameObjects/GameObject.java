@@ -1,11 +1,6 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public abstract class GameObject {
-    public float x;
-    public float y;
-
-    public abstract void update();
-    public abstract void draw(SpriteBatch batch);
+public abstract class GameObject extends Actor {
 }
