@@ -14,7 +14,7 @@ public class BeatChecker extends Thread {
 
     public void run() {
         try {
-            sleep(interval / 2);
+            sleep(11*interval/12);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
