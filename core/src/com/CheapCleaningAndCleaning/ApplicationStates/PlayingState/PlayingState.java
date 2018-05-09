@@ -3,12 +3,15 @@ package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState;
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player.Player;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 public class PlayingState extends AbstractApplicationState {
-    private Player player = new Player();
+    private Player player;
+    private Music music;
 
     private PlayingState() {
 
@@ -44,6 +47,10 @@ public class PlayingState extends AbstractApplicationState {
             }
         });
 
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/test.mp3"));
+        music.setLooping(true);
+        music.play();
+
         stage.addActor(player);
         stage.setKeyboardFocus(player);
     }
@@ -55,6 +62,7 @@ public class PlayingState extends AbstractApplicationState {
 
     @Override
     public void exit(Game entity) {
+        music.dispose();
         super.exit(entity);
     }
 
