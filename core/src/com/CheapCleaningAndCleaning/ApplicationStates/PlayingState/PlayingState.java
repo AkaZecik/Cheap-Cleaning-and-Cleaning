@@ -1,6 +1,7 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BeatChecker;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player.Player;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 public class PlayingState extends AbstractApplicationState {
     private Player player;
     private Music music;
+    private BeatChecker currentBeat;
 
     private PlayingState() {
 
@@ -24,25 +26,28 @@ public class PlayingState extends AbstractApplicationState {
     @Override
     public void enter(Game entity) {
         super.enter(entity);
+        currentBeat = new BeatChecker(120);
+        currentBeat.start();
         player = new Player();
         player.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
-                switch (keycode) {
-                    case Input.Keys.UP:
-                        player.moveUp();
-                        return true;
-                    case Input.Keys.RIGHT:
-                        player.moveRight();
-                        return true;
-                    case Input.Keys.DOWN:
-                        player.moveDown();
-                        return true;
-                    case Input.Keys.LEFT:
-                        player.moveLeft();
-                        return true;
+                if (currentBeat.IsPermitted()) {
+                    switch (keycode) {
+                        case Input.Keys.UP:
+                            player.moveUp();
+                            return true;
+                        case Input.Keys.RIGHT:
+                            player.moveRight();
+                            return true;
+                        case Input.Keys.DOWN:
+                            player.moveDown();
+                            return true;
+                        case Input.Keys.LEFT:
+                            player.moveLeft();
+                            return true;
+                    }
                 }
-
                 return false;
             }
         });
@@ -64,6 +69,7 @@ public class PlayingState extends AbstractApplicationState {
     @Override
     public void exit(Game entity) {
         music.dispose();
+        currentBeat.interrupt();
         super.exit(entity);
     }
 
