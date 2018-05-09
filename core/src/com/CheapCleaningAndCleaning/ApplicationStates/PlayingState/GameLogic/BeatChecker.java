@@ -9,7 +9,7 @@ public class BeatChecker extends Thread {
     private boolean allow = true;
 
     public BeatChecker(double BPM) {
-        interval = (long) (60000 / BPM);
+        interval = (long) (30000 / BPM);
     }
 
     public void run() {
