@@ -11,6 +11,10 @@ public class Player extends GameObject {
     private long positionY = 0;
     private Texture texture = new Texture(Gdx.files.internal("image/firstplayer.png"));
 
+    {
+        setSize(10, 10);
+    }
+
 
     @Override
     public void act(float delta) {
@@ -25,18 +29,18 @@ public class Player extends GameObject {
     }
 
     public void moveRight() {
-        positionX += 10;
+        if (positionX + 10 + getWidth() <= getStage().getWidth()) positionX += 10;
     }
 
     public void moveLeft() {
-        positionX -= 10;
+        if (positionX - 10 >= 0) positionX -= 10;
     }
 
     public void moveUp() {
-        positionY += 10;
+        if (positionY + 10 + getHeight() <= getStage().getHeight()) positionY += 10;
     }
 
     public void moveDown() {
-        positionY -= 10;
+        if (positionY - 10 >= 0) positionY -= 10;
     }
 }
