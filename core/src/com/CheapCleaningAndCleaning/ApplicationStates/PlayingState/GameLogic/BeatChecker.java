@@ -2,7 +2,6 @@ package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class BeatChecker extends Thread {
     private long interval;
@@ -10,7 +9,7 @@ public class BeatChecker extends Thread {
     private boolean allow = true;
 
     public BeatChecker(double BPM) {
-        interval = (long) (30000 / BPM);
+        interval = (long) (60000 / BPM);
     }
 
     public void run() {
