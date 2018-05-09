@@ -8,8 +8,8 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 //        config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
-        //config.width = 1920;
-        //config.height = 1080;
+        config.width = 1098;
+        config.height = 678;
         new LwjglApplication(new CheapCleaningAndCleaning(), config);
     }
 }
