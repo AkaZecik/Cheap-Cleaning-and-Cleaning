@@ -26,7 +26,7 @@ public class PlayingState extends AbstractApplicationState {
     @Override
     public void enter(Game entity) {
         super.enter(entity);
-        currentBeat = new BeatChecker(110);
+        currentBeat = new BeatChecker(100);
         currentBeat.start();
         player = new Player();
         player.addListener(new InputListener() {
