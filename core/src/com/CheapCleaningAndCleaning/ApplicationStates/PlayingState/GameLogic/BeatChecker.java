@@ -2,6 +2,7 @@ package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic;
 
 public class BeatChecker extends Thread {
     private long interval;
+    private boolean used = false;
     private boolean allow = true;
 
     public BeatChecker(double BPM) {
@@ -15,6 +16,7 @@ public class BeatChecker extends Thread {
             e.printStackTrace();
         }
         while (!isInterrupted()) {
+            used = false;
             allow = !allow;
             try {
                 sleep(interval);
@@ -25,6 +27,8 @@ public class BeatChecker extends Thread {
     }
 
     public boolean IsPermitted() {
+        if (used) return false;
+        used = true;
         return allow;
     }
 }
