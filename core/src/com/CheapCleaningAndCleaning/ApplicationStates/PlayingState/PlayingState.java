@@ -49,6 +49,7 @@ public class PlayingState extends AbstractApplicationState {
 
         music = Gdx.audio.newMusic(Gdx.files.internal("music/test.mp3"));
         music.setLooping(true);
+        music.setVolume(0.1f);
         music.play();
 
         stage.addActor(player);
