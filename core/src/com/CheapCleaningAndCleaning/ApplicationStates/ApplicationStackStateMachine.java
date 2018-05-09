@@ -3,7 +3,7 @@ package com.CheapCleaningAndCleaning.ApplicationStates;
 import com.CheapCleaningAndCleaning.State.StackStateMachine;
 import com.badlogic.gdx.Game;
 
-public class ApplicationStackStateMachine extends StackStateMachine<Game, ApplicationState> {
+public class ApplicationStackStateMachine extends StackStateMachine<Game, AbstractApplicationState> {
     public ApplicationStackStateMachine() {
         super();
     }
@@ -12,11 +12,11 @@ public class ApplicationStackStateMachine extends StackStateMachine<Game, Applic
         super(owner);
     }
 
-    public ApplicationStackStateMachine(Game owner, ApplicationState initialState) {
+    public ApplicationStackStateMachine(Game owner, AbstractApplicationState initialState) {
         super(owner, initialState);
     }
 
-    public ApplicationStackStateMachine(Game owner, ApplicationState initialState, ApplicationState globalState) {
+    public ApplicationStackStateMachine(Game owner, AbstractApplicationState initialState, AbstractApplicationState globalState) {
         super(owner, initialState, globalState);
     }
 
@@ -27,6 +27,12 @@ public class ApplicationStackStateMachine extends StackStateMachine<Game, Applic
 
         if (getCurrentState() != null) {
             getCurrentState().render();
+        }
+    }
+
+    public void handleInput() {
+        if(getCurrentState() != null && getCurrentState().nextState != null) {
+            changeState(getCurrentState().nextState);
         }
     }
 }

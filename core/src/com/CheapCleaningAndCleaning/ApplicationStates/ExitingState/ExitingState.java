@@ -2,6 +2,7 @@ package com.CheapCleaningAndCleaning.ApplicationStates.ExitingState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
 public class ExitingState extends AbstractApplicationState {
     private ExitingState() {
@@ -15,6 +16,7 @@ public class ExitingState extends AbstractApplicationState {
     @Override
     public void enter(Game entity) {
         super.enter(entity);
+        Gdx.app.exit();
     }
 
     @Override

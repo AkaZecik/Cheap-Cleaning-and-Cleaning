@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public abstract class AbstractApplicationState implements ApplicationState {
     protected Stage stage;
+    public AbstractApplicationState nextState;
 
     @Override
     public void enter(Game entity) {
@@ -33,5 +34,6 @@ public abstract class AbstractApplicationState implements ApplicationState {
     @Override
     public void exit(Game entity) {
         stage.dispose();
+        nextState = null;
     }
 }

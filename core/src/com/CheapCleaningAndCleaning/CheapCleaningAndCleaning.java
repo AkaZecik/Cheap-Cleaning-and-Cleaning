@@ -18,6 +18,7 @@ public class CheapCleaningAndCleaning extends Game {
 
     @Override
     public void render() {
+        stateStack.handleInput();
         long newTime = System.nanoTime();
         long frameTime = newTime - currentSystemTime;
         currentSystemTime = newTime;
