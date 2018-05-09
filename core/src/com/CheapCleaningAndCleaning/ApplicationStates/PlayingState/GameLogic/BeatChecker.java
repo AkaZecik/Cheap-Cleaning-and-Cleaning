@@ -1,5 +1,9 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 public class BeatChecker extends Thread {
     private long interval;
     private boolean used = false;
@@ -30,5 +34,12 @@ public class BeatChecker extends Thread {
         if (used) return false;
         used = true;
         return allow;
+    }
+
+    public void render(Batch batch){
+        batch.begin();
+        BitmapFont font = new BitmapFont();
+        font.draw(batch, String.valueOf(allow),400,400);
+        batch.end();
     }
 }
