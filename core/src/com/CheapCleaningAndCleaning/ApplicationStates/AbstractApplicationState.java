@@ -3,6 +3,7 @@ package com.CheapCleaningAndCleaning.ApplicationStates;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -12,6 +13,8 @@ public abstract class AbstractApplicationState implements ApplicationState {
     @Override
     public void enter(Game entity) {
         stage = new Stage(new ScreenViewport());
+        stage.getCamera().position.x=0;
+        stage.getCamera().position.y=0;
         Gdx.input.setInputProcessor(stage);
     }
 

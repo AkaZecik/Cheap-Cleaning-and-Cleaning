@@ -2,6 +2,7 @@ package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BeatChecker;
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Map.Map;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player.Player;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -14,6 +15,7 @@ public class PlayingState extends AbstractApplicationState {
     private Player player;
     private Music music;
     private BeatChecker currentBeat;
+    private Map map;
 
     private PlayingState() {
 
@@ -59,6 +61,11 @@ public class PlayingState extends AbstractApplicationState {
 
         stage.addActor(player);
         stage.setKeyboardFocus(player);
+
+        map=new Map(player);
+        stage.addActor(map);
+
+        map.setZIndex(0);
     }
 
     @Override
