@@ -30,8 +30,14 @@ public class ApplicationStackStateMachine extends StackStateMachine<Game, Abstra
         }
     }
 
+    @Override
+    public void changeState(AbstractApplicationState newState, boolean replaceCurrentState) {
+        System.out.println("State change [" + System.currentTimeMillis() + ", " + newState + "]");
+        super.changeState(newState, replaceCurrentState);
+    }
+
     public void handleInput() {
-        if(getCurrentState() != null && getCurrentState().nextState != null) {
+        if (getCurrentState() != null && getCurrentState().nextState != null) {
             changeState(getCurrentState().nextState, true);
         }
     }

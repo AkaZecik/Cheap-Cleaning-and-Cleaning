@@ -98,7 +98,6 @@ public class PlayingState extends AbstractApplicationState {
     @Override
     public void render() {
         super.render();
-        System.out.println("playing is rendering");
         currentBeat.render(stage.getBatch());
     }
 

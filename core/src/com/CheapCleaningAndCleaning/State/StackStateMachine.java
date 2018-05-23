@@ -81,8 +81,7 @@ public class StackStateMachine<E, S extends State<E>> implements StateMachine<E,
         }
 
         stateStack.clear();
-        stateStack.add(state);
-        getCurrentState().enter(owner);
+        changeState(state);
     }
 
     @Override
