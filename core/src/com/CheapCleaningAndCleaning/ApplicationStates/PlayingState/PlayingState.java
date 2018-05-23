@@ -2,6 +2,7 @@ package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ExitingState.ExitingState;
+import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BeatChecker;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Map.Map;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player.Player;
@@ -29,11 +30,13 @@ public class PlayingState extends AbstractApplicationState {
     @Override
     public void enter(Game entity) {
         super.enter(entity);
+        stage.getCamera().position.x = 0;
+        stage.getCamera().position.y = 0;
         stage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
-                    nextState = ExitingState.getInstance();
+                    nextState = MainMenuState.getInstance();
                     return true;
                 }
 
@@ -74,7 +77,7 @@ public class PlayingState extends AbstractApplicationState {
         stage.addActor(player);
         stage.setKeyboardFocus(player);
 
-        map=new Map(player);
+        map = new Map(player);
         stage.addActor(map);
 
         map.setZIndex(0);
@@ -87,9 +90,9 @@ public class PlayingState extends AbstractApplicationState {
 
     @Override
     public void exit(Game entity) {
-        super.exit(entity);
         music.dispose();
         currentBeat.interrupt();
+        super.exit(entity);
     }
 
     @Override
