@@ -24,13 +24,12 @@ public class Player extends GameObject {
 
     private PlayerStates prevPlayerState = PlayerStates.STILL;
 
-
     @Override
     public void act(float delta) {
         super.act(delta);
         //System.out.println(delta);
         if (playerState != PlayerStates.STILL) {
-            float distance = delta*2;
+            float distance = delta * 2;
             float cap = 0;
             if (prevPlayerState == PlayerStates.STILL) {
                 switch (playerState) {
@@ -107,7 +106,18 @@ public class Player extends GameObject {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(texture, -16, -16, 32, 32);
+        float size = (float) (positionX - Math.floor(positionX));
+        if (size == 0) {
+            size = (float) (positionY - Math.floor(positionY));
+        }
+        size = size * 2;
+        if (size > 1) {
+            size--;
+            size = 1 - size;
+        }
+        size = (float) Math.sin(size);
+        size += 1;
+        batch.draw(texture, -16 * size, -16 * size, 32 * size, 32 * size);
         //BitmapFont font = new BitmapFont();
         //font.draw(batch, "x: " + positionX + ", y: " + positionY, 200, 200);
     }

@@ -16,8 +16,8 @@ public class Map extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        for (float i = player.getPositionX()-100.5f; i <= player.getPositionX()+99.5; i++) {
-            for (float j = -player.getPositionY()-100.5f; j <= player.getPositionY()+99.5; j++) {
+        for (float i = (float) (-10.5f+(Math.floor(player.getPositionX())-player.getPositionX())); i <= +10.5f; i++) {
+            for (float j = (float) (-10.5f+(Math.floor(player.getPositionY())-player.getPositionY())); j <= +10.5f; j++) {
                 batch.draw(texture, i * 32, j * 32, 32, 32);
             }
         }
