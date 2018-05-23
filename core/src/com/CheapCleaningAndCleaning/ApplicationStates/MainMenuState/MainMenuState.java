@@ -44,7 +44,6 @@ public class MainMenuState extends AbstractApplicationState {
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
         textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-//        textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
         textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
         textButtonStyle.font = skin.getFont("default");
         skin.add("default", textButtonStyle);
@@ -52,7 +51,7 @@ public class MainMenuState extends AbstractApplicationState {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-        table.setDebug(true); // DEBUG
+//        table.setDebug(true); // DEBUG
 
         final TextButton play = new TextButton("PLAY", skin);
         final TextButton options = new TextButton("OPTIONS", skin);

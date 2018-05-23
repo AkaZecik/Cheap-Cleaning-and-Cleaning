@@ -32,7 +32,7 @@ public class ApplicationStackStateMachine extends StackStateMachine<Game, Abstra
 
     public void handleInput() {
         if(getCurrentState() != null && getCurrentState().nextState != null) {
-            changeState(getCurrentState().nextState);
+            changeState(getCurrentState().nextState, true);
         }
     }
 }

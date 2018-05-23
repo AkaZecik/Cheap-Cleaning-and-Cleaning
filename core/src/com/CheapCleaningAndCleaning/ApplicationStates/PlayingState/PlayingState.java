@@ -90,14 +90,15 @@ public class PlayingState extends AbstractApplicationState {
 
     @Override
     public void exit(Game entity) {
-        music.dispose();
         currentBeat.interrupt();
+        music.dispose();
         super.exit(entity);
     }
 
     @Override
     public void render() {
         super.render();
+        System.out.println("playing is rendering");
         currentBeat.render(stage.getBatch());
     }
 
