@@ -19,6 +19,14 @@ public class Player extends GameObject {
         return 128;
     }
 
+    public void setPositionX(float positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
+    }
+
     private float positionX = 0;
     private float positionY = 0;
     private float direction = 0;
