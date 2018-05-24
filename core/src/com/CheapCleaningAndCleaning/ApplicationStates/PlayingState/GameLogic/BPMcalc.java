@@ -6,7 +6,12 @@ import com.CheapCleaningAndCleaning.libraries.jwave.transforms.wavelets.Wavelet;
 import com.CheapCleaningAndCleaning.libraries.jwave.transforms.wavelets.daubechies.Daubechies4;
 
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.swing.event.ChangeListener;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -114,11 +119,15 @@ public class BPMcalc {
     public long[] readSamples() throws IOException {
         long value = 0L;
 
-        long[] res = new long[2];
+        //
+//        System.out.println(audioInputStream.available());
+        //
+
+        long[] res = new long[3];
 
         int bufferPointer = 0;
         int bytesRead = 0;
-        byte[] buffer = new byte[4];
+        byte[] buffer = new byte[6];
         int bytesPerSample = (int) Math.ceil(audioInputStream.getFormat().getSampleSizeInBits() / 8);
         for (int b = 0; b < 2 * bytesPerSample; b++) {
             if (b == bytesPerSample) {
@@ -126,17 +135,19 @@ public class BPMcalc {
                 value = 0;
             }
             if (bufferPointer == bytesRead) {
-                int read = audioInputStream.read(buffer, 0, 4);
+                int read = audioInputStream.read(buffer, 0, 6);
                 if (read == -1) throw new RuntimeException();
                 bytesRead = read;
                 bufferPointer = 0;
             }
 
 
+//            System.out.println(bytesPerSample);
+
             int byteValue = buffer[bufferPointer];
             if (b < bytesPerSample - 1 || bytesPerSample == 1)
                 byteValue = byteValue & 0xFF;
-            value = value + (byteValue << (b % 2 * 8));
+            value = value + (byteValue << ((b % 3) * 8));
 
             bufferPointer = bufferPointer + 1;
 
@@ -256,5 +267,17 @@ public class BPMcalc {
             _bpm = median(instantBpm);
         }
         return _bpm;
+    }
+
+    public static void main(String... args) {
+        Path path =Paths.get("core/assets/music/test2.wav");
+        File file= path.toFile();
+        try {
+            System.out.println(new BPMcalc(AudioSystem.getAudioInputStream(file),131072).bpm());
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println(path);
+            System.out.println(file);
+        }
     }
 }
