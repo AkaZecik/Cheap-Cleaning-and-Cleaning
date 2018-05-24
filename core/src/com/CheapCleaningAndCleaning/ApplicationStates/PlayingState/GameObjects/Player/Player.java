@@ -4,6 +4,7 @@ import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.G
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Player extends GameObject {
     public float getPositionX() {
@@ -14,9 +15,14 @@ public class Player extends GameObject {
         return positionY;
     }
 
+    public int getSize() {
+        return 128;
+    }
+
     private float positionX = 0;
     private float positionY = 0;
-    private Texture texture = new Texture(Gdx.files.internal("image/firstplayer.png"));
+    private float direction = 0;
+    private Texture texture = new Texture(Gdx.files.internal("image/player.png"));
 
     public enum PlayerStates {STILL, LEFT, RIGHT, UP, DOWN}
 
@@ -29,6 +35,20 @@ public class Player extends GameObject {
         super.act(delta);
         //System.out.println(delta);
         if (playerState != PlayerStates.STILL) {
+            switch (playerState) {
+                case UP:
+                    direction=0;
+                    break;
+                case DOWN:
+                    direction= (float) 180;
+                    break;
+                case LEFT:
+                    direction= (float) 90;
+                    break;
+                case RIGHT:
+                    direction= (float) 270;
+                    break;
+            }
             float distance = delta * 2;
             float cap = 0;
             if (prevPlayerState == PlayerStates.STILL) {
@@ -117,7 +137,8 @@ public class Player extends GameObject {
         }
         size = (float) Math.sin(size);
         size += 1;
-        batch.draw(texture, -16 * size, -16 * size, 32 * size, 32 * size);
+        batch.draw(new TextureRegion(texture), -(getSize() / 2) * size, -(getSize() / 2) * size,getSize()/2,getSize()/2, (float)getSize() * size, (float)getSize() * size,1f,1f,direction);
+        //batch.draw(texture, -(getSize() / 2) * size, -(getSize() / 2) * size, getSize() * size, getSize() * size);
         //BitmapFont font = new BitmapFont();
         //font.draw(batch, "x: " + positionX + ", y: " + positionY, 200, 200);
     }

@@ -36,9 +36,6 @@ public class BeatChecker extends Thread {
     }
 
     public void render(Batch batch){
-        batch.begin();
-        BitmapFont font = new BitmapFont();
-        font.draw(batch, String.valueOf(allow),400,400);
-        batch.end();
+
     }
 }
