@@ -1,5 +1,6 @@
 package com.CheapCleaningAndCleaning.ApplicationStates;
 
+import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState.ChoosingDifficultyState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState.ChoosingSaveState;
 import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
@@ -46,13 +47,26 @@ public class ApplicationStackStateMachine extends StackStateMachine<Game, Abstra
 
             if (next == PlayingState.getInstance()) {
                 dropState();
-                changeState(next, true);
+                dropState();
+                dropState();
+                changeState(next, false);
                 return;
             }
 
-            if (next == MainMenuState.getInstance() && current == ChoosingSaveState.getInstance()) {
-                dropState();
+            if (next == ChoosingSaveState.getInstance() && current == ChoosingDifficultyState.getInstance()) {
+                changeState(next, false);
                 return;
+            }
+
+            if (next == ChoosingDifficultyState.getInstance()) {
+                if (current == MainMenuState.getInstance()) {
+                    changeState(next, false);
+                    return;
+                }
+
+                if (current == ChoosingSaveState.getInstance()) {
+                    dropState();
+                }
             }
 
             changeState(next, true);

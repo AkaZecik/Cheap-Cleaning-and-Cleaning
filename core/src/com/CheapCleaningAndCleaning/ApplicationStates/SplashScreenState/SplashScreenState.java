@@ -37,7 +37,7 @@ public class SplashScreenState extends AbstractApplicationState {
     public void update(Game entity) {
         super.update(entity);
 
-        if (System.nanoTime() > entered + 3_000_000_000L) {
+        if (System.nanoTime() > entered + 1_000_000_000L) {
             nextState = MainMenuState.getInstance();
         }
     }

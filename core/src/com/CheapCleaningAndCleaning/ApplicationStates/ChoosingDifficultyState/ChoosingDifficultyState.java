@@ -1,8 +1,8 @@
-package com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState;
+package com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
-import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState.ChoosingDifficultyState;
-import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
+import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState.ChoosingSaveState;
+import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -17,26 +17,27 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class ChoosingSaveState extends AbstractApplicationState {
+public class ChoosingDifficultyState extends AbstractApplicationState {
     Skin skin;
 
-    private ChoosingSaveState() {
+    private ChoosingDifficultyState() {
 
     }
 
-    public static ChoosingSaveState getInstance() {
-        return ChoosingSaveState.InstanceHolder.instance;
+    public static ChoosingDifficultyState getInstance() {
+        return ChoosingDifficultyState.InstanceHolder.instance;
     }
 
     @Override
     public void enter(Game entity) {
         super.enter(entity);
+        skin = new Skin();
 
         stage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
-                    nextState = ChoosingDifficultyState.getInstance();
+                    nextState = MainMenuState.getInstance();
                     return true;
                 }
 
@@ -44,7 +45,6 @@ public class ChoosingSaveState extends AbstractApplicationState {
             }
         });
 
-        skin = new Skin();
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
@@ -65,25 +65,25 @@ public class ChoosingSaveState extends AbstractApplicationState {
         stage.addActor(table);
 //        table.setDebug(true); // DEBUG
 
-        final TextButton save1 = new TextButton("SAVE 1", skin);
-        final TextButton save2 = new TextButton("SAVE 2", skin);
-        final TextButton save3 = new TextButton("SAVE 3", skin);
-        table.add(save1).width(200).height(100).pad(25);
+        final TextButton easy = new TextButton("EASY", skin);
+        final TextButton medium = new TextButton("MEDIUM", skin);
+        final TextButton hard = new TextButton("TCS", skin);
+        table.add(easy).width(200).height(100).pad(25);
         table.row();
-        table.add(save2).width(200).height(100).pad(25);
+        table.add(medium).width(200).height(100).pad(25);
         table.row();
-        table.add(save3).width(200).height(100).pad(25);
+        table.add(hard).width(200).height(100).pad(25);
 
         ChangeListener listener = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                nextState = PlayingState.getInstance();
+                nextState = ChoosingSaveState.getInstance();
             }
         };
 
-        save1.addListener(listener);
-        save2.addListener(listener);
-        save3.addListener(listener);
+        easy.addListener(listener);
+        medium.addListener(listener);
+        hard.addListener(listener);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class ChoosingSaveState extends AbstractApplicationState {
     @Override
     public void exit(Game entity) {
         super.exit(entity);
-//        skin.dispose();
+        skin.dispose();
     }
 
     @Override
@@ -103,6 +103,6 @@ public class ChoosingSaveState extends AbstractApplicationState {
     }
 
     private static class InstanceHolder {
-        static ChoosingSaveState instance = new ChoosingSaveState();
+        static ChoosingDifficultyState instance = new ChoosingDifficultyState();
     }
 }

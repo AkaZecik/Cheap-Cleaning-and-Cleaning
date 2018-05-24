@@ -1,6 +1,7 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
+import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState.ChoosingDifficultyState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState.ChoosingSaveState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ExitingState.ExitingState;
 import com.badlogic.gdx.Game;
@@ -62,7 +63,7 @@ public class MainMenuState extends AbstractApplicationState {
         play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                nextState = ChoosingSaveState.getInstance();
+                nextState = ChoosingDifficultyState.getInstance();
             }
         });
 
@@ -82,6 +83,7 @@ public class MainMenuState extends AbstractApplicationState {
     @Override
     public void exit(Game entity) {
         super.exit(entity);
+//        skin.dispose();
     }
 
     @Override

@@ -30,7 +30,12 @@ public abstract class AbstractApplicationState implements ApplicationState {
 
     @Override
     public void exit(Game entity) {
-        stage.dispose();
+        if(stage != null) {
+            // TODO
+            stage.dispose();
+
+        }
+        stage = null;
         nextState = null;
     }
 }
