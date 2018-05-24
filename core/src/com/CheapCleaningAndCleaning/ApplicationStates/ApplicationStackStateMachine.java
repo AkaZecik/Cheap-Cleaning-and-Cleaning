@@ -1,5 +1,8 @@
 package com.CheapCleaningAndCleaning.ApplicationStates;
 
+import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState.ChoosingSaveState;
+import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
 import com.CheapCleaningAndCleaning.State.StackStateMachine;
 import com.badlogic.gdx.Game;
 
@@ -38,7 +41,27 @@ public class ApplicationStackStateMachine extends StackStateMachine<Game, Abstra
 
     public void handleInput() {
         if (getCurrentState() != null && getCurrentState().nextState != null) {
-            changeState(getCurrentState().nextState, true);
+            AbstractApplicationState current = getCurrentState();
+            AbstractApplicationState next = current.nextState;
+
+            if (next == PlayingState.getInstance()) {
+                dropState();
+                changeState(next, true);
+                return;
+            }
+
+            if (next == MainMenuState.getInstance() && current == ChoosingSaveState.getInstance()) {
+                dropState();
+                return;
+            }
+
+            changeState(next, true);
+        }
+    }
+
+    public void dropState() {
+        if (stateStack.size > 0) {
+            stateStack.pop().exit(owner);
         }
     }
 }

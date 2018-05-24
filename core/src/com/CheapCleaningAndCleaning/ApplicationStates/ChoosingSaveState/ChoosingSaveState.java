@@ -1,35 +1,50 @@
-package com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState;
+package com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
-import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState.ChoosingSaveState;
-import com.CheapCleaningAndCleaning.ApplicationStates.ExitingState.ExitingState;
+import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class MainMenuState extends AbstractApplicationState {
+public class ChoosingSaveState extends AbstractApplicationState {
     Skin skin;
 
-    private MainMenuState() {
+    private ChoosingSaveState() {
 
     }
 
-    public static MainMenuState getInstance() {
-        return InstanceHolder.instance;
+    public static ChoosingSaveState getInstance() {
+        return ChoosingSaveState.InstanceHolder.instance;
     }
 
     @Override
     public void enter(Game entity) {
         super.enter(entity);
-        skin = new Skin();
 
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.ESCAPE) {
+                    nextState = MainMenuState.getInstance();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
+        skin = new Skin();
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
@@ -50,28 +65,25 @@ public class MainMenuState extends AbstractApplicationState {
         stage.addActor(table);
 //        table.setDebug(true); // DEBUG
 
-        final TextButton play = new TextButton("PLAY", skin);
-        final TextButton options = new TextButton("OPTIONS", skin);
-        final TextButton exit = new TextButton("EXIT", skin);
-        table.add(play).width(200).height(100).pad(25);
+        final TextButton save1 = new TextButton("SAVE 1", skin);
+        final TextButton save2 = new TextButton("SAVE 2", skin);
+        final TextButton save3 = new TextButton("SAVE 3", skin);
+        table.add(save1).width(200).height(100).pad(25);
         table.row();
-        table.add(options).width(200).height(100).pad(25);
+        table.add(save2).width(200).height(100).pad(25);
         table.row();
-        table.add(exit).width(200).height(100).pad(25);
+        table.add(save3).width(200).height(100).pad(25);
 
-        play.addListener(new ChangeListener() {
+        ChangeListener listener = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                nextState = ChoosingSaveState.getInstance();
+                nextState = PlayingState.getInstance();
             }
-        });
+        };
 
-        exit.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                nextState = ExitingState.getInstance();
-            }
-        });
+        save1.addListener(listener);
+        save2.addListener(listener);
+        save3.addListener(listener);
     }
 
     @Override
@@ -90,6 +102,6 @@ public class MainMenuState extends AbstractApplicationState {
     }
 
     private static class InstanceHolder {
-        static MainMenuState instance = new MainMenuState();
+        static ChoosingSaveState instance = new ChoosingSaveState();
     }
 }
