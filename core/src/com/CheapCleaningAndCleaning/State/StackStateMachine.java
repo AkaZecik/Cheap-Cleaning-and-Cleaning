@@ -48,8 +48,10 @@ public class StackStateMachine<E, S extends State<E>> implements StateMachine<E,
             throw new NullPointerException("newState == null");
         }
 
-        if (replaceCurrentState) {
-            if (stateStack.size > 0) {
+        if (stateStack.size > 0) {
+            stateStack.get(stateStack.size - 1).exit(owner);
+
+            if (replaceCurrentState) {
                 stateStack.pop();
             }
         }
@@ -79,8 +81,7 @@ public class StackStateMachine<E, S extends State<E>> implements StateMachine<E,
         }
 
         stateStack.clear();
-        stateStack.add(state);
-        getCurrentState().enter(owner);
+        changeState(state);
     }
 
     @Override

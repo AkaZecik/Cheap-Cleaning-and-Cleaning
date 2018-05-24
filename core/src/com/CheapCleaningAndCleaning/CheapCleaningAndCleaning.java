@@ -2,6 +2,7 @@ package com.CheapCleaningAndCleaning;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
+import com.CheapCleaningAndCleaning.ApplicationStates.SplashScreenState.SplashScreenState;
 import com.badlogic.gdx.Game;
 
 public class CheapCleaningAndCleaning extends Game {
@@ -12,12 +13,13 @@ public class CheapCleaningAndCleaning extends Game {
 
     @Override
     public void create() {
-        stateStack = new ApplicationStackStateMachine(this, PlayingState.getInstance());
+        stateStack = new ApplicationStackStateMachine(this, SplashScreenState.getInstance());
         currentSystemTime = System.nanoTime();
     }
 
     @Override
     public void render() {
+        stateStack.handleInput();
         long newTime = System.nanoTime();
         long frameTime = newTime - currentSystemTime;
         currentSystemTime = newTime;
