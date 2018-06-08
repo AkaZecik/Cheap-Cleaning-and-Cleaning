@@ -1,9 +1,10 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
-import com.CheapCleaningAndCleaning.ApplicationStates.ExitingState.ExitingState;
 import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BPMcalc;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BeatChecker;
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.SongDatabase;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Map.Map;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player.Player;
 import com.badlogic.gdx.Game;
@@ -12,6 +13,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class PlayingState extends AbstractApplicationState {
     private Player player;
@@ -43,7 +50,29 @@ public class PlayingState extends AbstractApplicationState {
                 return false;
             }
         });
-        currentBeat = new BeatChecker(100);
+        String name = "test.mp3";
+        double BPM = -1.0;
+        try {
+            BPM = SongDatabase.find(name);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        Path path = Paths.get("core/assets/music/" + name);
+        if (BPM == -1.0) {
+            try {
+                BPM = new BPMcalc(AudioSystem.getAudioInputStream(path.toFile()), 131072).bpm();
+                SongDatabase.add(name, BPM);
+            } catch (UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        currentBeat = new BeatChecker(BPM);
         currentBeat.start();
         player = new Player();
         player.addListener(new InputListener() {
@@ -69,7 +98,7 @@ public class PlayingState extends AbstractApplicationState {
             }
         });
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("music/test.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/" + name));
         music.setLooping(true);
         music.setVolume(0.1f);
         music.play();
