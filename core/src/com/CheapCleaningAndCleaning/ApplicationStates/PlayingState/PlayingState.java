@@ -1,11 +1,12 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
-import com.CheapCleaningAndCleaning.ApplicationStates.ExitingState.ExitingState;
+import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
 import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BeatChecker;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Map.Map;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player.Player;
+import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -19,8 +20,8 @@ public class PlayingState extends AbstractApplicationState {
     private BeatChecker currentBeat;
     private Map map;
 
-    private PlayingState() {
-
+    private PlayingState(ApplicationStackStateMachine stateMachine) {
+        super(stateMachine);
     }
 
     public static PlayingState getInstance() {
@@ -36,7 +37,7 @@ public class PlayingState extends AbstractApplicationState {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
-                    nextState = MainMenuState.getInstance();
+                    stateMachine.transitionToState(MainMenuState.getInstance());
                     return true;
                 }
 
@@ -102,6 +103,6 @@ public class PlayingState extends AbstractApplicationState {
     }
 
     private static class InstanceHolder {
-        static PlayingState instance = new PlayingState();
+        static PlayingState instance = new PlayingState(CheapCleaningAndCleaning.getStateMachine());
     }
 }

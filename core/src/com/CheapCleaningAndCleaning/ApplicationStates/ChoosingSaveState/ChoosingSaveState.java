@@ -1,8 +1,9 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
-import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState.ChoosingDifficultyState;
+import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
+import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -18,10 +19,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class ChoosingSaveState extends AbstractApplicationState {
-    Skin skin;
+    private Skin skin;
 
-    private ChoosingSaveState() {
-
+    private ChoosingSaveState(ApplicationStackStateMachine stateMachine) {
+        super(stateMachine);
     }
 
     public static ChoosingSaveState getInstance() {
@@ -36,7 +37,7 @@ public class ChoosingSaveState extends AbstractApplicationState {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
-                    nextState = ChoosingDifficultyState.getInstance();
+                    stateMachine.revertToPreviousState();
                     return true;
                 }
 
@@ -77,7 +78,7 @@ public class ChoosingSaveState extends AbstractApplicationState {
         ChangeListener listener = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                nextState = PlayingState.getInstance();
+                stateMachine.transitionToState(PlayingState.getInstance());
             }
         };
 
@@ -103,6 +104,6 @@ public class ChoosingSaveState extends AbstractApplicationState {
     }
 
     private static class InstanceHolder {
-        static ChoosingSaveState instance = new ChoosingSaveState();
+        static ChoosingSaveState instance = new ChoosingSaveState(CheapCleaningAndCleaning.getStateMachine());
     }
 }

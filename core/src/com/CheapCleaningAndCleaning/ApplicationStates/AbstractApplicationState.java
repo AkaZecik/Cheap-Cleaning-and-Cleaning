@@ -7,13 +7,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public abstract class AbstractApplicationState implements ApplicationState {
-    public AbstractApplicationState nextState;
+    protected ApplicationStackStateMachine stateMachine;
     protected Stage stage;
+
+    protected AbstractApplicationState(ApplicationStackStateMachine stateMachine) {
+        this.stateMachine = stateMachine;
+    }
 
     @Override
     public void enter(Game entity) {
+        System.out.println("Entering " + this.getClass().getSimpleName() + " at " + System.currentTimeMillis());
         stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+        setInputProcessor();
     }
 
     @Override
@@ -30,12 +35,12 @@ public abstract class AbstractApplicationState implements ApplicationState {
 
     @Override
     public void exit(Game entity) {
-        if(stage != null) {
-            // TODO
-            stage.dispose();
-
-        }
+        System.out.println("Leaving " + this.getClass().getSimpleName() + " at " + System.currentTimeMillis());
+        stage.dispose();
         stage = null;
-        nextState = null;
+    }
+
+    public void setInputProcessor() {
+        Gdx.input.setInputProcessor(stage);
     }
 }

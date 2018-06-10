@@ -2,12 +2,14 @@ package com.CheapCleaningAndCleaning.ApplicationStates;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState.ChoosingDifficultyState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState.ChoosingSaveState;
-import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
+import com.CheapCleaningAndCleaning.ApplicationStates.PreviousState.PreviousState;
 import com.CheapCleaningAndCleaning.State.StackStateMachine;
 import com.badlogic.gdx.Game;
 
 public class ApplicationStackStateMachine extends StackStateMachine<Game, AbstractApplicationState> {
+    private AbstractApplicationState nextState;
+
     public ApplicationStackStateMachine() {
         super();
     }
@@ -34,48 +36,50 @@ public class ApplicationStackStateMachine extends StackStateMachine<Game, Abstra
         }
     }
 
+    public void transitionToState(AbstractApplicationState nextState) {
+        if (nextState == null) {
+            throw new NullPointerException("nextState is null");
+        }
+
+        this.nextState = nextState;
+    }
+
     @Override
-    public void changeState(AbstractApplicationState newState, boolean replaceCurrentState) {
-        System.out.println("State change [" + System.currentTimeMillis() + ", " + newState + "]");
-        super.changeState(newState, replaceCurrentState);
+    public boolean revertToPreviousState() {
+        nextState = PreviousState.getInstance();
+        return true;
     }
 
-    public void handleInput() {
-        if (getCurrentState() != null && getCurrentState().nextState != null) {
-            AbstractApplicationState current = getCurrentState();
-            AbstractApplicationState next = current.nextState;
-
-            if (next == PlayingState.getInstance()) {
-                dropState();
-                dropState();
-                dropState();
-                changeState(next, false);
-                return;
-            }
-
-            if (next == ChoosingSaveState.getInstance() && current == ChoosingDifficultyState.getInstance()) {
-                changeState(next, false);
-                return;
-            }
-
-            if (next == ChoosingDifficultyState.getInstance()) {
-                if (current == MainMenuState.getInstance()) {
-                    changeState(next, false);
-                    return;
-                }
-
-                if (current == ChoosingSaveState.getInstance()) {
-                    dropState();
-                }
-            }
-
-            changeState(next, true);
+    public void processTransitions() {
+        if (nextState == null) {
+            return;
         }
-    }
 
-    public void dropState() {
-        if (stateStack.size > 0) {
-            stateStack.pop().exit(owner);
+        AbstractApplicationState theNextState = nextState;
+        nextState = null;
+
+        if (theNextState == PreviousState.getInstance()) {
+            super.revertToPreviousState();
+            getCurrentState().setInputProcessor();
+            return;
         }
+
+        if (theNextState == PlayingState.getInstance()) {
+            clearStack();
+            putState(theNextState);
+            return;
+        }
+
+        if (theNextState == ChoosingSaveState.getInstance()) {
+            putState(theNextState);
+            return;
+        }
+
+        if (theNextState == ChoosingDifficultyState.getInstance()) {
+            putState(theNextState);
+            return;
+        }
+
+        changeState(theNextState);
     }
 }

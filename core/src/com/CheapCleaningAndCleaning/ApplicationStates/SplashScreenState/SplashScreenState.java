@@ -1,7 +1,9 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.SplashScreenState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
+import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
 import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
+import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,8 +16,8 @@ public class SplashScreenState extends AbstractApplicationState {
     private TextureRegion textureRegion;
     private Image image;
 
-    private SplashScreenState() {
-
+    private SplashScreenState(ApplicationStackStateMachine stateMachine) {
+        super(stateMachine);
     }
 
     public static SplashScreenState getInstance() {
@@ -38,7 +40,7 @@ public class SplashScreenState extends AbstractApplicationState {
         super.update(entity);
 
         if (System.nanoTime() > entered + 1_000_000_000L) {
-            nextState = MainMenuState.getInstance();
+            stateMachine.transitionToState(MainMenuState.getInstance());
         }
     }
 
@@ -54,6 +56,6 @@ public class SplashScreenState extends AbstractApplicationState {
     }
 
     private static class InstanceHolder {
-        static SplashScreenState instance = new SplashScreenState();
+        static SplashScreenState instance = new SplashScreenState(CheapCleaningAndCleaning.getStateMachine());
     }
 }

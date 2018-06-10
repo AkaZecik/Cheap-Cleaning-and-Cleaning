@@ -1,12 +1,14 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.ExitingState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
+import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
+import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
 public class ExitingState extends AbstractApplicationState {
-    private ExitingState() {
-
+    private ExitingState(ApplicationStackStateMachine stateMachine) {
+        super(stateMachine);
     }
 
     public static ExitingState getInstance() {
@@ -35,6 +37,6 @@ public class ExitingState extends AbstractApplicationState {
     }
 
     private static class InstanceHolder {
-        static ExitingState instance = new ExitingState();
+        static ExitingState instance = new ExitingState(CheapCleaningAndCleaning.getStateMachine());
     }
 }

@@ -24,7 +24,10 @@ public class StackStateMachine<E, S extends State<E>> implements StateMachine<E,
     public StackStateMachine(E owner, S initialState, S globalState) {
         this.owner = owner;
         this.globalState = globalState;
-        this.setInitialState(initialState);
+
+        if (initialState != null) {
+            this.setInitialState(initialState);
+        }
     }
 
     @Override
@@ -40,33 +43,38 @@ public class StackStateMachine<E, S extends State<E>> implements StateMachine<E,
 
     @Override
     public void changeState(S newState) {
-        changeState(newState, false);
-    }
-
-    public void changeState(S newState, boolean replaceCurrentState) {
         if (newState == null) {
             throw new NullPointerException("newState == null");
         }
 
-        if (stateStack.size > 0) {
-            stateStack.get(stateStack.size - 1).exit(owner);
+        dropState();
+        putState(newState);
+    }
 
-            if (replaceCurrentState) {
-                stateStack.pop();
-            }
+    public void putState(S newState) {
+        if (newState == null) {
+            throw new NullPointerException("newState == null");
         }
 
         stateStack.add(newState);
-        getCurrentState().enter(owner);
+        newState.enter(owner);
+    }
+
+    public void dropState() {
+        if (stateStack.size == 0) {
+            throw new IllegalStateException("stateStack is empty. Cannot drop a state");
+        }
+
+        stateStack.pop().exit(owner);
     }
 
     @Override
     public boolean revertToPreviousState() {
         if (stateStack.size == 0) {
-            return false;
+            throw new IllegalStateException("stateStack is empty. Cannot revert to previous state");
         }
 
-        stateStack.pop();
+        dropState();
         return true;
     }
 
@@ -80,13 +88,13 @@ public class StackStateMachine<E, S extends State<E>> implements StateMachine<E,
             stateStack = new Array<>();
         }
 
-        stateStack.clear();
-        changeState(state);
+        clearStack();
+        putState(state);
     }
 
     @Override
     public S getCurrentState() {
-        return stateStack == null ? null : stateStack.peek();
+        return stateStack == null ? null : stateStack.size == 0 ? globalState : stateStack.peek();
     }
 
     @Override
@@ -97,5 +105,11 @@ public class StackStateMachine<E, S extends State<E>> implements StateMachine<E,
     @Override
     public boolean isInState(S state) {
         return stateStack != null && Objects.equals(state, getCurrentState());
+    }
+
+    protected void clearStack() {
+        while (stateStack.size != 0) {
+            dropState();
+        }
     }
 }

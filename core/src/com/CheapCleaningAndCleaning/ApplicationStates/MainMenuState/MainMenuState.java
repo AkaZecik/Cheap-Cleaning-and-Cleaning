@@ -1,9 +1,10 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
+import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
 import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState.ChoosingDifficultyState;
-import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState.ChoosingSaveState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ExitingState.ExitingState;
+import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -16,10 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class MainMenuState extends AbstractApplicationState {
-    Skin skin;
+    private Skin skin;
 
-    private MainMenuState() {
-
+    private MainMenuState(ApplicationStackStateMachine stateMachine) {
+        super(stateMachine);
     }
 
     public static MainMenuState getInstance() {
@@ -63,14 +64,14 @@ public class MainMenuState extends AbstractApplicationState {
         play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                nextState = ChoosingDifficultyState.getInstance();
+                stateMachine.transitionToState(ChoosingDifficultyState.getInstance());
             }
         });
 
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                nextState = ExitingState.getInstance();
+                stateMachine.transitionToState(ExitingState.getInstance());
             }
         });
     }
@@ -92,6 +93,6 @@ public class MainMenuState extends AbstractApplicationState {
     }
 
     private static class InstanceHolder {
-        static MainMenuState instance = new MainMenuState();
+        static MainMenuState instance = new MainMenuState(CheapCleaningAndCleaning.getStateMachine());
     }
 }
