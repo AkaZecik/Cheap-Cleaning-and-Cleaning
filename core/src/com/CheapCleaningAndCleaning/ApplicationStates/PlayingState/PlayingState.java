@@ -66,20 +66,24 @@ public class PlayingState extends AbstractApplicationState {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-        Path path = Paths.get("core/assets/music/" + name);
-        if (BPM == -1.0) {
+        } catch (SongDatabase.SongNotFoundException e) {
+            Path path = Paths.get("core/assets/music/" + name);
             try {
                 BPM = new BPMcalc(AudioSystem.getAudioInputStream(path.toFile()), 131072).bpm();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (UnsupportedAudioFileException e1) {
+                e1.printStackTrace();
+            }
+            try {
                 sd.add(name, BPM);
-            } catch (UnsupportedAudioFileException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (ClassNotFoundException e1) {
+                e1.printStackTrace();
             }
         }
+
         currentBeat = new BeatChecker(BPM);
         currentBeat.start();
         player = new Player();
