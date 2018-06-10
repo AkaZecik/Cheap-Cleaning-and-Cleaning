@@ -51,9 +51,17 @@ public class PlayingState extends AbstractApplicationState {
             }
         });
         String name = "test.mp3";
+        SongDatabase sd = null;
+        try {
+            sd = new SongDatabase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         double BPM = -1.0;
         try {
-            BPM = SongDatabase.find(name);
+            BPM = sd.find(name);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -63,7 +71,7 @@ public class PlayingState extends AbstractApplicationState {
         if (BPM == -1.0) {
             try {
                 BPM = new BPMcalc(AudioSystem.getAudioInputStream(path.toFile()), 131072).bpm();
-                SongDatabase.add(name, BPM);
+                sd.add(name, BPM);
             } catch (UnsupportedAudioFileException e) {
                 e.printStackTrace();
             } catch (IOException e) {

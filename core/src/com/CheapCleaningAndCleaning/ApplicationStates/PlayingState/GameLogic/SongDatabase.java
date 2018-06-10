@@ -4,63 +4,43 @@ import java.io.*;
 import java.util.HashMap;
 
 public class SongDatabase {
-    public static Double find(String name) throws IOException, NullPointerException, ClassNotFoundException {
-        if (name == null) throw new NullPointerException();
+    HashMap<String, Double> fileMap;
 
+    public SongDatabase() throws IOException, ClassNotFoundException {
         File toRead = new File("music/SongsBPM");
         FileInputStream fis = new FileInputStream(toRead);
         ObjectInputStream ois = new ObjectInputStream(fis);
+        fileMap = ((HashMap<String, Double>) ois.readObject());
 
-        HashMap<String, Double> fileMap = ((HashMap<String, Double>) ois.readObject());
         ois.close();
         fis.close();
+    }
 
+    public void update() throws IOException {
+        File toWrite = new File("music/SongsBPM");
+        FileOutputStream fos = new FileOutputStream(toWrite);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+        oos.writeObject(fileMap);
+        oos.flush();
+        oos.close();
+        fos.close();
+    }
+
+    public Double find(String name) throws IOException, NullPointerException, ClassNotFoundException {
+        if (name == null) throw new NullPointerException();
         return fileMap.getOrDefault(name, -1.0);
     }
 
-    public static Double add(String name, Double BPM) throws IOException, ClassNotFoundException {
-        File toRead = new File("music/SongsBPM");
-        FileInputStream fis = new FileInputStream(toRead);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-
-        HashMap<String, Double> fileMap = ((HashMap<String, Double>) ois.readObject());
-        ois.close();
-        fis.close();
-
+    public Double add(String name, Double BPM) throws IOException, ClassNotFoundException {
         fileMap.put(name, BPM);
-
-        File toWrite = new File("music/SongsBPM");
-        FileOutputStream fos = new FileOutputStream(toWrite);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-
-        oos.writeObject(fileMap);
-        oos.flush();
-        oos.close();
-        fos.close();
-
+        update();
         return BPM;
     }
 
-    public static Double delete(String name) throws IOException, ClassNotFoundException {
-        File toRead = new File("music/SongsBPM");
-        FileInputStream fis = new FileInputStream(toRead);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-
-        HashMap<String, Double> fileMap = ((HashMap<String, Double>) ois.readObject());
-        ois.close();
-        fis.close();
-
+    public Double delete(String name) throws IOException, ClassNotFoundException {
         Double val = fileMap.remove(name);
-
-        File toWrite = new File("music/SongsBPM");
-        FileOutputStream fos = new FileOutputStream(toWrite);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-
-        oos.writeObject(fileMap);
-        oos.flush();
-        oos.close();
-        fos.close();
-
+        update();
         return val;
     }
 }
