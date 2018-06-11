@@ -1,5 +1,6 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.BPMhud;
 
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BeatChecker;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.GameObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,12 +8,18 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class BPMhud extends GameObject {
     long interval;
+    long first;
     long begin = System.nanoTime();
-    private Texture texture1 = new Texture(Gdx.files.internal("image/circle.png"));
-    private Texture texture2 = new Texture(Gdx.files.internal("image/BeatSign.png"));
+    BeatChecker beat;
 
-    public BPMhud(double BPM) {
-        interval = (long) (60000 / BPM);
+    private Texture texture1 = new Texture(Gdx.files.internal("image/circle2.png"));
+    private Texture texture2 = new Texture(Gdx.files.internal("image/BadClick.png"));
+    private Texture texture3 = new Texture(Gdx.files.internal("image/GoodClick.png"));
+
+    public BPMhud(BeatChecker b, double BPM) {
+        beat = b;
+        interval = 2 * b.intervalValue();
+        first = b.firstValue();
     }
 
     @Override
@@ -25,11 +32,12 @@ public class BPMhud extends GameObject {
         long timeFromStart = System.nanoTime() - begin;
         timeFromStart /= 1e6;
 
-        float numerator = (float) interval - timeFromStart % interval;
+        float numerator = (float) first + interval - timeFromStart % interval;
         float denominator = (float) interval;
         float scale = numerator / denominator;
 
-        batch.draw(texture2, -64 * scale, -136 + (-64 * scale), 128 * scale, 128 * scale);
+        if (!beat.allowStatus()) batch.draw(texture2, -64 * scale, -136 + (-64 * scale), 128 * scale, 128 * scale);
+        else batch.draw(texture3, -64 * scale, -136 + (-64 * scale), 128 * scale, 128 * scale);
         batch.draw(texture1, -64, -200);
     }
 }

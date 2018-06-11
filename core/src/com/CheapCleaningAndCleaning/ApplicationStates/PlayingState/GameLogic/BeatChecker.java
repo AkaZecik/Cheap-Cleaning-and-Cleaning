@@ -7,10 +7,18 @@ public class BeatChecker extends Thread {
     private long interval;
     private boolean used = false;
     private boolean allow = true;
-    private long first = 11 * interval / 12;
+    private long first = 0;
 
     public BeatChecker(double BPM) {
         interval = (long) (30000 / BPM);
+    }
+
+    public long intervalValue() {
+        return interval;
+    }
+
+    public long firstValue() {
+        return first;
     }
 
     public void run() {
@@ -32,9 +40,13 @@ public class BeatChecker extends Thread {
         }
     }
 
-    public boolean IsPermitted() {
+    public boolean isPermitted() {
         if (used) return false;
         used = true;
+        return allow;
+    }
+
+    public boolean allowStatus() {
         return allow;
     }
 

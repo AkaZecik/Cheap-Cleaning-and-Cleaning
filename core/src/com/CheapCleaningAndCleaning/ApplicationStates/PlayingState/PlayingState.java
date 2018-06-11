@@ -91,7 +91,7 @@ public class PlayingState extends AbstractApplicationState {
         player.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
-                if (currentBeat.IsPermitted()) {
+                if (currentBeat.isPermitted()) {
                     switch (keycode) {
                         case Input.Keys.UP:
                             player.moveUp();
@@ -121,7 +121,7 @@ public class PlayingState extends AbstractApplicationState {
 
         map = new Map(player);
         stage.addActor(map);
-        BPMhud bPMhud = new BPMhud(BPM);
+        BPMhud bPMhud = new BPMhud(currentBeat, BPM);
         stage.addActor(bPMhud);
 
         map.setZIndex(0);
