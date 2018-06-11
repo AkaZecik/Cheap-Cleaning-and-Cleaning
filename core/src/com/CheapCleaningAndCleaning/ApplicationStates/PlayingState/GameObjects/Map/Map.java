@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class Map extends Actor {
     private ArrayList<Texture> textures=new ArrayList<>();
     private Player player;
-    private Integer[][] map;
+    public Integer[][] map;
 
     static class MapParser {
         Integer[][] map;
@@ -35,6 +35,7 @@ public class Map extends Actor {
         }
 
         this.player = player;
+        this.player.map=this;
         Json json = new Json();
         MapParser mapParser = json.fromJson(MapParser.class, Gdx.files.internal("maps/1.json").readString());
         map = mapParser.map;
@@ -44,7 +45,6 @@ public class Map extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        System.out.println("x: "+player.getPositionX()+" y: "+player.getPositionY());
         int height = Gdx.graphics.getHeight();
         int width = Gdx.graphics.getWidth();
         height = height / 1 / player.getSize();

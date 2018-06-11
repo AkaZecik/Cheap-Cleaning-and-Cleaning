@@ -1,6 +1,7 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.GameObject;
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -38,6 +39,8 @@ public class Player extends GameObject {
 
     private PlayerStates prevPlayerState = PlayerStates.STILL;
 
+    public Map map;
+
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -63,15 +66,31 @@ public class Player extends GameObject {
                 switch (playerState) {
                     case UP:
                         cap = positionY + 1;
+                        if(map.map[(int) cap][(int) positionX]==1){
+                            playerState=PlayerStates.STILL;
+                            return;
+                        }
                         break;
                     case DOWN:
                         cap = positionY - 1;
+                        if(map.map[(int) cap][(int) positionX]==1){
+                            playerState=PlayerStates.STILL;
+                            return;
+                        }
                         break;
                     case LEFT:
                         cap = positionX - 1;
+                        if(map.map[(int) positionY][(int) cap]==1){
+                            playerState=PlayerStates.STILL;
+                            return;
+                        }
                         break;
                     case RIGHT:
                         cap = positionX + 1;
+                        if(map.map[(int) positionY][(int) cap]==1){
+                            playerState=PlayerStates.STILL;
+                            return;
+                        }
                         break;
                 }
                 prevPlayerState = playerState;
