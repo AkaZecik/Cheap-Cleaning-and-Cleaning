@@ -13,7 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import java.io.*;
+import java.util.HashMap;
+
 public class OptionsState extends AbstractApplicationState {
+    HashMap<String, String> settings;
     private Skin skin;
 
     private OptionsState(ApplicationStackStateMachine stateMachine) {
@@ -29,6 +33,12 @@ public class OptionsState extends AbstractApplicationState {
         super.enter(entity);
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
+        try {
+            loadSettings();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         stage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
@@ -42,7 +52,7 @@ public class OptionsState extends AbstractApplicationState {
         });
 
         final Slider volume = new Slider(0, 100, 1, false, skin);
-        volume.setValue(100);
+        volume.setValue(Float.valueOf(settings.get("volume")));
         ImageTextButton.ImageTextButtonStyle buttonStyle = new ImageTextButton.ImageTextButtonStyle(skin.get(TextButton.TextButtonStyle.class));
         ImageTextButton saveButton = new ImageTextButton("Save settings", buttonStyle);
 
@@ -65,6 +75,7 @@ public class OptionsState extends AbstractApplicationState {
         volume.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                settings.put("volume", String.valueOf(volume.getValue()));
                 volumeValue.setText(String.valueOf(volume.getValue()));
             }
         });
@@ -72,9 +83,45 @@ public class OptionsState extends AbstractApplicationState {
         saveButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    saveSettings();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 stateMachine.transitionToState(PreviousState.getInstance());
             }
         });
+    }
+
+    private void loadSettings() throws IOException {
+        File toRead = new File("settings");
+
+        if (toRead.createNewFile()) {
+            settings = new HashMap<>();
+            settings.put("volume", "100");
+            saveSettings();
+        } else {
+            try (FileInputStream fis = new FileInputStream(toRead)) {
+                try (ObjectInputStream ois = new ObjectInputStream(fis)) {
+                    settings = (HashMap<String, String>) ois.readObject();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void saveSettings() throws IOException {
+        File toWrite = new File("settings");
+
+        try (FileOutputStream fos = new FileOutputStream(toWrite)) {
+            try (ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                System.out.println(settings.get("volume"));
+                oos.writeObject(settings);
+                oos.flush();
+            }
+        }
     }
 
     private static class InstanceHolder {
