@@ -1,11 +1,12 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
-import com.CheapCleaningAndCleaning.ApplicationStates.ExitingState.ExitingState;
+import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
 import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BeatChecker;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Map.Map;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player.Player;
+import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -15,16 +16,18 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 public class PlayingState extends AbstractApplicationState {
     private Player player;
+    private String song;
     private Music music;
     private BeatChecker currentBeat;
     private Map map;
 
-    private PlayingState() {
-
+    private PlayingState(ApplicationStackStateMachine stateMachine, String song) {
+        super(stateMachine);
+        this.song = song;
     }
 
-    public static PlayingState getInstance() {
-        return InstanceHolder.instance;
+    public static PlayingState getInstance(String song) {
+        return new PlayingState(CheapCleaningAndCleaning.getStateMachine(), song);
     }
 
     @Override
@@ -36,7 +39,7 @@ public class PlayingState extends AbstractApplicationState {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
-                    nextState = MainMenuState.getInstance();
+                    stateMachine.transitionToState(MainMenuState.getInstance());
                     return true;
                 }
 
@@ -99,9 +102,5 @@ public class PlayingState extends AbstractApplicationState {
     public void render() {
         super.render();
         currentBeat.render(stage.getBatch());
-    }
-
-    private static class InstanceHolder {
-        static PlayingState instance = new PlayingState();
     }
 }

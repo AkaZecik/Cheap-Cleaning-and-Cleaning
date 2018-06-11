@@ -1,10 +1,8 @@
-package com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState;
+package com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
-import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState.ChoosingDifficultyState;
-import com.CheapCleaningAndCleaning.ApplicationStates.ExitingState.ExitingState;
-import com.CheapCleaningAndCleaning.ApplicationStates.OptionsState.OptionsState;
+import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState.ChoosingSaveState;
 import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -17,15 +15,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class MainMenuState extends AbstractApplicationState {
+public class ChoosingDifficultyState extends AbstractApplicationState {
     private Skin skin;
 
-    private MainMenuState(ApplicationStackStateMachine stateMachine) {
+    private ChoosingDifficultyState(ApplicationStackStateMachine stateMachine) {
         super(stateMachine);
     }
 
-    public static MainMenuState getInstance() {
-        return InstanceHolder.instance;
+    public static ChoosingDifficultyState getInstance() {
+        return ChoosingDifficultyState.InstanceHolder.instance;
     }
 
     @Override
@@ -51,36 +49,26 @@ public class MainMenuState extends AbstractApplicationState {
         stage.addActor(table);
 //        table.setDebug(true); // DEBUG
 
-        final TextButton play = new TextButton("PLAY", skin);
-        final TextButton options = new TextButton("OPTIONS", skin);
-        final TextButton exit = new TextButton("EXIT", skin);
-        table.add(play).minWidth(200).fillX().height(100).pad(25);
+        final TextButton easy = new TextButton("EASY", skin);
+        final TextButton medium = new TextButton("MEDIUM", skin);
+        final TextButton hard = new TextButton("TCS", skin);
+        table.add(easy).minWidth(200).fillX().height(100).pad(25);
         table.row();
-        table.add(options).minWidth(200).fillX().height(100).pad(25);
+        table.add(medium).minWidth(200).fillX().height(100).pad(25);
         table.row();
-        table.add(exit).minWidth(200).fillX().height(100).pad(25);
+        table.add(hard).minWidth(200).fillX().height(100).pad(25);
         table.pack();
 
-        play.addListener(new ChangeListener() {
+        ChangeListener listener = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                stateMachine.transitionToState(ChoosingDifficultyState.getInstance());
+                stateMachine.transitionToState(ChoosingSaveState.getInstance());
             }
-        });
+        };
 
-        options.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                stateMachine.transitionToState(OptionsState.getInstance());
-            }
-        });
-
-        exit.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                stateMachine.transitionToState(ExitingState.getInstance());
-            }
-        });
+        easy.addListener(listener);
+        medium.addListener(listener);
+        hard.addListener(listener);
     }
 
     @Override
@@ -91,7 +79,7 @@ public class MainMenuState extends AbstractApplicationState {
     @Override
     public void exit(Game entity) {
         super.exit(entity);
-//        skin.dispose();
+        skin.dispose();
     }
 
     @Override
@@ -100,6 +88,6 @@ public class MainMenuState extends AbstractApplicationState {
     }
 
     private static class InstanceHolder {
-        static MainMenuState instance = new MainMenuState(CheapCleaningAndCleaning.getStateMachine());
+        static ChoosingDifficultyState instance = new ChoosingDifficultyState(CheapCleaningAndCleaning.getStateMachine());
     }
 }
