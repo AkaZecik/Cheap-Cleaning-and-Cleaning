@@ -1,10 +1,8 @@
-package com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState;
+package com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
-import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState.ChoosingDifficultyState;
-import com.CheapCleaningAndCleaning.ApplicationStates.ExitingState.ExitingState;
-import com.CheapCleaningAndCleaning.ApplicationStates.OptionsState.OptionsState;
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
 import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -17,15 +15,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class MainMenuState extends AbstractApplicationState {
+public class ChoosingSaveState extends AbstractApplicationState {
     private Skin skin;
 
-    private MainMenuState(ApplicationStackStateMachine stateMachine) {
+    private ChoosingSaveState(ApplicationStackStateMachine stateMachine) {
         super(stateMachine);
     }
 
-    public static MainMenuState getInstance() {
-        return InstanceHolder.instance;
+    public static ChoosingSaveState getInstance() {
+        return ChoosingSaveState.InstanceHolder.instance;
     }
 
     @Override
@@ -51,36 +49,26 @@ public class MainMenuState extends AbstractApplicationState {
         stage.addActor(table);
 //        table.setDebug(true); // DEBUG
 
-        final TextButton play = new TextButton("PLAY", skin);
-        final TextButton options = new TextButton("OPTIONS", skin);
-        final TextButton exit = new TextButton("EXIT", skin);
-        table.add(play).minWidth(200).fillX().height(100).pad(25);
+        final TextButton save1 = new TextButton("SAVE 1", skin);
+        final TextButton save2 = new TextButton("SAVE 2", skin);
+        final TextButton save3 = new TextButton("SAVE 3", skin);
+        table.add(save1).minWidth(200).fillX().height(100).pad(25);
         table.row();
-        table.add(options).minWidth(200).fillX().height(100).pad(25);
+        table.add(save2).minWidth(200).fillX().height(100).pad(25);
         table.row();
-        table.add(exit).minWidth(200).fillX().height(100).pad(25);
+        table.add(save3).minWidth(200).fillX().height(100).pad(25);
         table.pack();
 
-        play.addListener(new ChangeListener() {
+        ChangeListener listener = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                stateMachine.transitionToState(ChoosingDifficultyState.getInstance());
+                stateMachine.transitionToState(PlayingState.getInstance(""));
             }
-        });
+        };
 
-        options.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                stateMachine.transitionToState(OptionsState.getInstance());
-            }
-        });
-
-        exit.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                stateMachine.transitionToState(ExitingState.getInstance());
-            }
-        });
+        save1.addListener(listener);
+        save2.addListener(listener);
+        save3.addListener(listener);
     }
 
     @Override
@@ -100,6 +88,6 @@ public class MainMenuState extends AbstractApplicationState {
     }
 
     private static class InstanceHolder {
-        static MainMenuState instance = new MainMenuState(CheapCleaningAndCleaning.getStateMachine());
+        static ChoosingSaveState instance = new ChoosingSaveState(CheapCleaningAndCleaning.getStateMachine());
     }
 }

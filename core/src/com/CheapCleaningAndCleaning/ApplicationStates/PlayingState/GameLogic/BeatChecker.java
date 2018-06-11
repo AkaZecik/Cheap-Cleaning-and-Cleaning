@@ -7,7 +7,7 @@ public class BeatChecker extends Thread {
     private long interval;
     private boolean moveAlreadyUsed = false;
     private boolean moveAllowed = true;
-    private long firstBeatTimeShift = 0;
+    private long firstBeatTimeShift = 11 * interval / 12;
 
     public BeatChecker(double BPM) {
         interval = (long) (30000 / BPM);

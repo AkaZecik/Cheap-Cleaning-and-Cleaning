@@ -12,7 +12,7 @@ public class BPMhud extends GameObject {
     long begin = System.nanoTime();
     BeatChecker beat;
 
-    private Texture texture1 = new Texture(Gdx.files.internal("image/circle2.png"));
+    private Texture texture1 = new Texture(Gdx.files.internal("image/Circle2.png"));
     private Texture texture2 = new Texture(Gdx.files.internal("image/BadClick.png"));
     private Texture texture3 = new Texture(Gdx.files.internal("image/GoodClick.png"));
 

@@ -1,6 +1,7 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
+import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
 import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BPMcalc;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BeatChecker;
@@ -8,6 +9,8 @@ import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.Son
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.BPMhud.BPMhud;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Map.Map;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player.Player;
+import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
+import com.CheapCleaningAndCleaning.GlobalFunctions;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -20,31 +23,42 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 public class PlayingState extends AbstractApplicationState {
     private Player player;
+    private String song;
     private Music music;
     private BeatChecker currentBeat;
     private Map map;
+    private HashMap<String, String> settings;
 
-    private PlayingState() {
-
+    private PlayingState(ApplicationStackStateMachine stateMachine, String song) {
+        super(stateMachine);
+        this.song = song;
     }
 
-    public static PlayingState getInstance() {
-        return InstanceHolder.instance;
+    public static PlayingState getInstance(String song) {
+        return new PlayingState(CheapCleaningAndCleaning.getStateMachine(), song);
     }
 
     @Override
     public void enter(Game entity) {
         super.enter(entity);
+
+        try {
+            settings = GlobalFunctions.loadSettings();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         stage.getCamera().position.x = 0;
         stage.getCamera().position.y = 0;
         stage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
-                    nextState = MainMenuState.getInstance();
+                    stateMachine.transitionToState(MainMenuState.getInstance());
                     return true;
                 }
 
@@ -115,7 +129,7 @@ public class PlayingState extends AbstractApplicationState {
         currentBeat = new BeatChecker(BPM);
         music = Gdx.audio.newMusic(Gdx.files.internal("music/" + name));
         music.setLooping(true);
-        music.setVolume(0.1f);
+        music.setVolume(Float.valueOf(settings.get("volume")) / 100);
         music.play();
         currentBeat.start();
 
@@ -146,9 +160,5 @@ public class PlayingState extends AbstractApplicationState {
     public void render() {
         super.render();
         currentBeat.render(stage.getBatch());
-    }
-
-    private static class InstanceHolder {
-        static PlayingState instance = new PlayingState();
     }
 }
