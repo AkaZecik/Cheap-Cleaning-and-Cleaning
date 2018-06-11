@@ -5,11 +5,8 @@ import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachi
 import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState.ChoosingSaveState;
 import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -32,7 +29,8 @@ public class ChoosingDifficultyState extends AbstractApplicationState {
     @Override
     public void enter(Game entity) {
         super.enter(entity);
-        skin = new Skin();
+        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        skin.getFont("default-font").getData().setScale(2f, 2f);
 
         stage.addListener(new InputListener() {
             @Override
@@ -46,21 +44,6 @@ public class ChoosingDifficultyState extends AbstractApplicationState {
             }
         });
 
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("white", new Texture(pixmap));
-        BitmapFont font = new BitmapFont();
-        font.getData().setScale(2);
-        skin.add("default", font);
-
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-        textButtonStyle.font = skin.getFont("default");
-        skin.add("default", textButtonStyle);
-
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
@@ -69,11 +52,12 @@ public class ChoosingDifficultyState extends AbstractApplicationState {
         final TextButton easy = new TextButton("EASY", skin);
         final TextButton medium = new TextButton("MEDIUM", skin);
         final TextButton hard = new TextButton("TCS", skin);
-        table.add(easy).width(200).height(100).pad(25);
+        table.add(easy).minWidth(200).fillX().height(100).pad(25);
         table.row();
-        table.add(medium).width(200).height(100).pad(25);
+        table.add(medium).minWidth(200).fillX().height(100).pad(25);
         table.row();
-        table.add(hard).width(200).height(100).pad(25);
+        table.add(hard).minWidth(200).fillX().height(100).pad(25);
+        table.pack();
 
         ChangeListener listener = new ChangeListener() {
             @Override

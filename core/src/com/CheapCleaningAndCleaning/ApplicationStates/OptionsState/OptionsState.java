@@ -2,6 +2,7 @@ package com.CheapCleaningAndCleaning.ApplicationStates.OptionsState;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
+import com.CheapCleaningAndCleaning.ApplicationStates.PreviousState.PreviousState;
 import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -9,10 +10,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class OptionsState extends AbstractApplicationState {
@@ -45,13 +43,8 @@ public class OptionsState extends AbstractApplicationState {
 
         final Slider volume = new Slider(0, 100, 1, false, skin);
         volume.setValue(100);
-//        volume.setAnimateDuration(0.1f);
-        volume.addListener(new InputListener() {
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                event.stop();
-                return false;
-            }
-        });
+        ImageTextButton.ImageTextButtonStyle buttonStyle = new ImageTextButton.ImageTextButtonStyle(skin.get(TextButton.TextButtonStyle.class));
+        ImageTextButton saveButton = new ImageTextButton("Save settings", buttonStyle);
 
         Label volumeLabel = new Label("Volume: ", skin);
         volumeLabel.setWrap(true);
@@ -60,16 +53,26 @@ public class OptionsState extends AbstractApplicationState {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-        table.setDebug(true); // DEBUG
+//        table.setDebug(true); // DEBUG
 
-        table.add(volumeLabel).minWidth(100).fillX().colspan(3).pad(25);
-        table.add(volume).minWidth(200).fillX().colspan(3).pad(25);
-        table.add(volumeValue).minWidth(50).fillX().colspan(3).pad(25);
+        table.add(volumeLabel).minWidth(100).fillX().pad(25);
+        table.add(volume).minWidth(200).fillX().pad(25);
+        table.add(volumeValue).minWidth(50).fillX().pad(25);
+        table.row();
+        table.add(saveButton).minWidth(200).colspan(3).pad(25).center();
+        table.pack();
 
         volume.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 volumeValue.setText(String.valueOf(volume.getValue()));
+            }
+        });
+
+        saveButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                stateMachine.transitionToState(PreviousState.getInstance());
             }
         });
     }

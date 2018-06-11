@@ -5,11 +5,8 @@ import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachi
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
 import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -32,6 +29,8 @@ public class ChoosingSaveState extends AbstractApplicationState {
     @Override
     public void enter(Game entity) {
         super.enter(entity);
+        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        skin.getFont("default-font").getData().setScale(2f, 2f);
 
         stage.addListener(new InputListener() {
             @Override
@@ -45,22 +44,6 @@ public class ChoosingSaveState extends AbstractApplicationState {
             }
         });
 
-        skin = new Skin();
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("white", new Texture(pixmap));
-        BitmapFont font = new BitmapFont();
-        font.getData().setScale(2);
-        skin.add("default", font);
-
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-        textButtonStyle.font = skin.getFont("default");
-        skin.add("default", textButtonStyle);
-
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
@@ -69,11 +52,12 @@ public class ChoosingSaveState extends AbstractApplicationState {
         final TextButton save1 = new TextButton("SAVE 1", skin);
         final TextButton save2 = new TextButton("SAVE 2", skin);
         final TextButton save3 = new TextButton("SAVE 3", skin);
-        table.add(save1).width(200).height(100).pad(25);
+        table.add(save1).minWidth(200).fillX().height(100).pad(25);
         table.row();
-        table.add(save2).width(200).height(100).pad(25);
+        table.add(save2).minWidth(200).fillX().height(100).pad(25);
         table.row();
-        table.add(save3).width(200).height(100).pad(25);
+        table.add(save3).minWidth(200).fillX().height(100).pad(25);
+        table.pack();
 
         ChangeListener listener = new ChangeListener() {
             @Override
