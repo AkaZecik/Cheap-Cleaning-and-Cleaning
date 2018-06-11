@@ -34,7 +34,7 @@ public class OptionsState extends AbstractApplicationState {
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
         try {
-            loadSettings();
+            settings = loadSettings();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,8 +53,10 @@ public class OptionsState extends AbstractApplicationState {
 
         final Slider volume = new Slider(0, 100, 1, false, skin);
         volume.setValue(Float.valueOf(settings.get("volume")));
+
         ImageTextButton.ImageTextButtonStyle buttonStyle = new ImageTextButton.ImageTextButtonStyle(skin.get(TextButton.TextButtonStyle.class));
         ImageTextButton saveButton = new ImageTextButton("Save settings", buttonStyle);
+        ImageTextButton backButton = new ImageTextButton("Back", buttonStyle);
 
         Label volumeLabel = new Label("Volume: ", skin);
         volumeLabel.setWrap(true);
@@ -65,10 +67,11 @@ public class OptionsState extends AbstractApplicationState {
         stage.addActor(table);
 //        table.setDebug(true); // DEBUG
 
-        table.add(volumeLabel).minWidth(100).fillX().pad(25);
-        table.add(volume).minWidth(200).fillX().pad(25);
-        table.add(volumeValue).minWidth(50).fillX().pad(25);
+        table.add(volumeLabel).minWidth(100).fillX().pad(25).colspan(2);
+        table.add(volume).minWidth(200).fillX().pad(25).colspan(2);
+        table.add(volumeValue).minWidth(50).fillX().pad(25).colspan(2);
         table.row();
+        table.add(backButton).minWidth(200).colspan(3).pad(25).center();
         table.add(saveButton).minWidth(200).colspan(3).pad(25).center();
         table.pack();
 
@@ -80,11 +83,18 @@ public class OptionsState extends AbstractApplicationState {
             }
         });
 
+        backButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                stateMachine.transitionToState(PreviousState.getInstance());
+            }
+        });
+
         saveButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 try {
-                    saveSettings();
+                    saveSettings(settings);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -94,13 +104,14 @@ public class OptionsState extends AbstractApplicationState {
         });
     }
 
-    private void loadSettings() throws IOException {
+    private HashMap<String, String> loadSettings() throws IOException {
         File toRead = new File("settings");
+        HashMap<String, String> settings = null;
 
         if (toRead.createNewFile()) {
             settings = new HashMap<>();
             settings.put("volume", "100");
-            saveSettings();
+            saveSettings(settings);
         } else {
             try (FileInputStream fis = new FileInputStream(toRead)) {
                 try (ObjectInputStream ois = new ObjectInputStream(fis)) {
@@ -110,14 +121,15 @@ public class OptionsState extends AbstractApplicationState {
                 }
             }
         }
+
+        return settings;
     }
 
-    private void saveSettings() throws IOException {
+    private void saveSettings(HashMap<String, String> settings) throws IOException {
         File toWrite = new File("settings");
 
         try (FileOutputStream fos = new FileOutputStream(toWrite)) {
             try (ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-                System.out.println(settings.get("volume"));
                 oos.writeObject(settings);
                 oos.flush();
             }
