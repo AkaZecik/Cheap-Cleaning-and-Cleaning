@@ -48,16 +48,16 @@ public class Player extends GameObject {
         if (playerState != PlayerStates.STILL) {
             switch (playerState) {
                 case UP:
-                    direction=0;
+                    direction = 0;
                     break;
                 case DOWN:
-                    direction= (float) 180;
+                    direction = (float) 180;
                     break;
                 case LEFT:
-                    direction= (float) 90;
+                    direction = (float) 90;
                     break;
                 case RIGHT:
-                    direction= (float) 270;
+                    direction = (float) 270;
                     break;
             }
             float distance = delta * 2;
@@ -66,29 +66,29 @@ public class Player extends GameObject {
                 switch (playerState) {
                     case UP:
                         cap = positionY + 1;
-                        if(map.map[(int) cap][(int) positionX]==1){
-                            playerState=PlayerStates.STILL;
+                        if (map.map[(int) cap][(int) positionX] == 1) {
+                            playerState = PlayerStates.STILL;
                             return;
                         }
                         break;
                     case DOWN:
                         cap = positionY - 1;
-                        if(map.map[(int) cap][(int) positionX]==1){
-                            playerState=PlayerStates.STILL;
+                        if (map.map[(int) cap][(int) positionX] == 1) {
+                            playerState = PlayerStates.STILL;
                             return;
                         }
                         break;
                     case LEFT:
                         cap = positionX - 1;
-                        if(map.map[(int) positionY][(int) cap]==1){
-                            playerState=PlayerStates.STILL;
+                        if (map.map[(int) positionY][(int) cap] == 1) {
+                            playerState = PlayerStates.STILL;
                             return;
                         }
                         break;
                     case RIGHT:
                         cap = positionX + 1;
-                        if(map.map[(int) positionY][(int) cap]==1){
-                            playerState=PlayerStates.STILL;
+                        if (map.map[(int) positionY][(int) cap] == 1) {
+                            playerState = PlayerStates.STILL;
                             return;
                         }
                         break;
@@ -116,6 +116,7 @@ public class Player extends GameObject {
                         positionY = cap;
                         playerState = PlayerStates.STILL;
                         prevPlayerState = PlayerStates.STILL;
+                        checkPointPosition();
                     } else {
                         positionY = positionY + distance;
                     }
@@ -125,6 +126,7 @@ public class Player extends GameObject {
                         positionY = cap;
                         playerState = PlayerStates.STILL;
                         prevPlayerState = PlayerStates.STILL;
+                        checkPointPosition();
                     } else {
                         positionY = positionY - distance;
                     }
@@ -134,6 +136,7 @@ public class Player extends GameObject {
                         positionX = cap;
                         playerState = PlayerStates.STILL;
                         prevPlayerState = PlayerStates.STILL;
+                        checkPointPosition();
                     } else {
                         positionX = positionX - distance;
                     }
@@ -143,11 +146,23 @@ public class Player extends GameObject {
                         positionX = cap;
                         playerState = PlayerStates.STILL;
                         prevPlayerState = PlayerStates.STILL;
+                        checkPointPosition();
                     } else {
                         positionX = positionX + distance;
                     }
                     break;
             }
+        }
+    }
+
+    private void checkPointPosition() {
+        if (map.map[(int) positionY][(int) positionX] == 2) {
+            map.map[(int) positionY][(int) positionX] = 0;
+            map.pointCounter--;
+        }
+        if (map.map[(int) positionY][(int) positionX] == 3 && map.pointCounter==0) {
+            System.out.println("KONIEC");
+            //ZROBIC KONIEC
         }
     }
 
@@ -164,7 +179,7 @@ public class Player extends GameObject {
         }
         size = (float) Math.sin(size);
         size += 1;
-        batch.draw(new TextureRegion(texture), -(getSize() / 2) * size, -(getSize() / 2) * size,getSize()/2,getSize()/2, (float)getSize() * size, (float)getSize() * size,1f,1f,direction);
+        batch.draw(new TextureRegion(texture), -(getSize() / 2) * size, -(getSize() / 2) * size, getSize() / 2, getSize() / 2, (float) getSize() * size, (float) getSize() * size, 1f, 1f, direction);
         //batch.draw(texture, -(getSize() / 2) * size, -(getSize() / 2) * size, getSize() * size, getSize() * size);
         //BitmapFont font = new BitmapFont();
         //font.draw(batch, "x: " + positionX + ", y: " + positionY, 200, 200);

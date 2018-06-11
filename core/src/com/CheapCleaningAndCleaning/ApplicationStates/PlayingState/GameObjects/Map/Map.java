@@ -15,6 +15,7 @@ public class Map extends Actor {
     private ArrayList<Texture> textures=new ArrayList<>();
     private Player player;
     public Integer[][] map;
+    public Integer pointCounter;
 
     static class MapParser {
         Integer[][] map;
@@ -39,6 +40,14 @@ public class Map extends Actor {
         Json json = new Json();
         MapParser mapParser = json.fromJson(MapParser.class, Gdx.files.internal("maps/1.json").readString());
         map = mapParser.map;
+        pointCounter=0;
+        for(int j=0;j<map.length;j++){
+            for(int k=0;k<map[j].length;k++){
+                if(map[j][k]==2){
+                    pointCounter++;
+                }
+            }
+        }
         player.setPositionX(mapParser.playerX);
         player.setPositionY(mapParser.playerY);
     }
