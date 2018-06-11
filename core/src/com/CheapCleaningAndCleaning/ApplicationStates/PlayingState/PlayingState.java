@@ -65,6 +65,7 @@ public class PlayingState extends AbstractApplicationState {
                 return false;
             }
         });
+
         String name = "test.mp3";
         SongDatabase sd = null;
 
@@ -102,7 +103,7 @@ public class PlayingState extends AbstractApplicationState {
             }
         }
 
-        player = new Player();
+        player = new Player(stateMachine);
         player.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
@@ -159,6 +160,6 @@ public class PlayingState extends AbstractApplicationState {
     @Override
     public void render() {
         super.render();
-        currentBeat.render(stage.getBatch());
+        //currentBeat.render(stage.getBatch());
     }
 }
