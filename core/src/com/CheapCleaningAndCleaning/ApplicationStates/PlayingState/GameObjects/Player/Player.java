@@ -1,54 +1,47 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player;
 
+import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
 import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.GameObject;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Map.Map;
-import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import sun.applet.Main;
 
 public class Player extends GameObject {
+    public Map map;
+    private ApplicationStackStateMachine stateMachine;
+    private float positionX = 0;
+    private float positionY = 0;
+    private float direction = 0;
+    private Texture texture = new Texture(Gdx.files.internal("image/player.png"));
+    private PlayerStates playerState = PlayerStates.STILL;
+    private PlayerStates prevPlayerState = PlayerStates.STILL;
+
+    public Player(ApplicationStackStateMachine stateMachine) {
+        this.stateMachine = stateMachine;
+    }
+
     public float getPositionX() {
         return positionX;
-    }
-
-    public float getPositionY() {
-        return positionY;
-    }
-
-    public int getSize() {
-        return 128;
     }
 
     public void setPositionX(float positionX) {
         this.positionX = positionX;
     }
 
+    public float getPositionY() {
+        return positionY;
+    }
+
     public void setPositionY(float positionY) {
         this.positionY = positionY;
     }
 
-    private PlayingState playingState;
-
-    public Player(PlayingState state){
-        playingState=state;
+    public int getSize() {
+        return 128;
     }
-
-    private float positionX = 0;
-    private float positionY = 0;
-    private float direction = 0;
-    private Texture texture = new Texture(Gdx.files.internal("image/player.png"));
-
-    public enum PlayerStates {STILL, LEFT, RIGHT, UP, DOWN}
-
-    private PlayerStates playerState = PlayerStates.STILL;
-
-    private PlayerStates prevPlayerState = PlayerStates.STILL;
-
-    public Map map;
 
     @Override
     public void act(float delta) {
@@ -169,9 +162,9 @@ public class Player extends GameObject {
             map.map[(int) positionY][(int) positionX] = 0;
             map.pointCounter--;
         }
-        if (map.map[(int) positionY][(int) positionX] == 3 && map.pointCounter==0) {
+        if (map.map[(int) positionY][(int) positionX] == 3 && map.pointCounter == 0) {
             System.out.println("KONIEC");
-            playingState.nextState=MainMenuState.getInstance();
+            stateMachine.transitionToState(MainMenuState.getInstance());
             //ZROBIC KONIEC
         }
     }
@@ -218,4 +211,6 @@ public class Player extends GameObject {
             playerState = PlayerStates.DOWN;
         }
     }
+
+    public enum PlayerStates {STILL, LEFT, RIGHT, UP, DOWN}
 }

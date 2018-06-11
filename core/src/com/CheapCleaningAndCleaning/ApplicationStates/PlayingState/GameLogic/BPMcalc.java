@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+//ALGORYTM OPARTY O PRACE NAUKOWĄ http://soundlab.cs.princeton.edu/publications/2001_amta_aadwt.pdf
+
 public class BPMcalc {
 
     AudioInputStream audioInputStream;
@@ -22,7 +25,7 @@ public class BPMcalc {
     double _bpm = -1;
     double[] instantBpm = new double[0];
 
-    BPMcalc(AudioInputStream ais, int wf) {
+    public BPMcalc(AudioInputStream ais, int wf) {
         audioInputStream = ais;
         windowFrames = wf;
 
@@ -34,23 +37,26 @@ public class BPMcalc {
         }
     }
 
+    //dodaje wartosc na koniec tablicy
     public static double[] append(double[] array, double value) {
         double[] result = Arrays.copyOf(array, array.length + 1);
         result[result.length - 1] = value;
         return result;
     }
 
+    //korelacja danych z tablicy
     public static double[] correlate(double[] array) {
         int n = array.length;
         double[] correlation = new double[n];
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
-                if (k + i < n) correlation[k] = correlation[k] + array[i] * array[k + i];
+                if (k + i < n) correlation[k] += array[i] * array[k + i];
             }
         }
         return correlation;
     }
 
+    //srednia liczb z tablicy
     public static double mean(double[] array) {
         int n = array.length;
         double sum = 0;
@@ -60,6 +66,7 @@ public class BPMcalc {
         return sum / n;
     }
 
+    //odejmuje wartosc od kazdej liczby z tablicy
     public static double[] sub(double[] array, double value) {
         int n = array.length;
         double[] res = new double[n];
@@ -69,6 +76,7 @@ public class BPMcalc {
         return res;
     }
 
+    //mediana liczb z tablicy
     public static double median(double[] array) {
         double[] copy = array.clone();
         Arrays.sort(copy);
@@ -80,6 +88,7 @@ public class BPMcalc {
         return median;
     }
 
+    //wartosc bezwzgledna liczb z tablicy
     public static double[] abs(double[] array) {
         int n = array.length;
         double[] res = new double[n];
@@ -89,18 +98,21 @@ public class BPMcalc {
         return res;
     }
 
+    //undersample wartosci z tablicy
     public static double[] undersample(double[] array, int pace) {
         List<Double> list = new ArrayList<>();
         for (int i = 0; i < array.length; i++) if (i % pace == 0) list.add(array[i]);
         return list.stream().mapToDouble(d -> d).toArray();
     }
 
+    //co druga liczba z tablicy
     public static double[] someFunction(int[] array) {
         List<Double> list = new ArrayList<>();
         for (int i = 0; i < array.length; i++) if (i % 2 == 0) list.add((double) array[i]);
         return list.stream().mapToDouble(d -> d).toArray();
     }
 
+    //tablica sum z odpowiadajacych wartosci
     public static double[] addarray(double[] array1, double[] array2) {
         int n = array1.length;
         double[] res = new double[n];
@@ -110,23 +122,24 @@ public class BPMcalc {
         return res;
     }
 
-
+    //pobiera wartosc dla pojednyczego Sampla
     public long[] readSamples() throws IOException {
         long value = 0L;
 
-        long[] res = new long[2];
+        int bytesPerSample = (int) Math.ceil(audioInputStream.getFormat().getSampleSizeInBits() / 8);
+        long[] res = new long[bytesPerSample];
 
         int bufferPointer = 0;
         int bytesRead = 0;
-        byte[] buffer = new byte[4];
-        int bytesPerSample = (int) Math.ceil(audioInputStream.getFormat().getSampleSizeInBits() / 8);
+        byte[] buffer = new byte[2 * bytesPerSample];
+
         for (int b = 0; b < 2 * bytesPerSample; b++) {
             if (b == bytesPerSample) {
                 res[0] = value;
                 value = 0;
             }
             if (bufferPointer == bytesRead) {
-                int read = audioInputStream.read(buffer, 0, 4);
+                int read = audioInputStream.read(buffer, 0, 2 * bytesPerSample);
                 if (read == -1) throw new RuntimeException();
                 bytesRead = read;
                 bufferPointer = 0;
@@ -136,7 +149,7 @@ public class BPMcalc {
             int byteValue = buffer[bufferPointer];
             if (b < bytesPerSample - 1 || bytesPerSample == 1)
                 byteValue = byteValue & 0xFF;
-            value = value + (byteValue << (b % 2 * 8));
+            value = value + (byteValue << ((b % bytesPerSample) * 8));
 
             bufferPointer = bufferPointer + 1;
 
@@ -148,7 +161,7 @@ public class BPMcalc {
         return res;
     }
 
-
+    //przetwarza dane z kolejnych Framow
     int readFrames(int[] sampleBuffer, int offset, int numFramesToRead) throws IOException {
         int index = offset;
         int frameCounter = 0;
@@ -167,6 +180,7 @@ public class BPMcalc {
         return numFramesToRead;
     }
 
+    //wykrywanie peakow w utworze
     private int detectPeak(double[] data) {
         double max = Double.MIN_VALUE;
 
@@ -191,6 +205,7 @@ public class BPMcalc {
         return location;
     }
 
+    //oblicz BPM w zadanych oknie czasowym
     private void computeWindowBpm(double[] data) {
 
         double[] aC = null;
@@ -245,7 +260,7 @@ public class BPMcalc {
         instantBpm = append(instantBpm, windowBpm);
     }
 
-    double bpm() throws IOException {
+    public double bpm() throws IOException {
         if (_bpm == -1) {
             for (int currentWindow = 0; currentWindow < windowsToProcess; currentWindow++) {
                 int[] buffer = new int[windowFrames * audioInputStream.getFormat().getChannels()];
