@@ -4,6 +4,7 @@ import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
 import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState.ChoosingDifficultyState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ExitingState.ExitingState;
+import com.CheapCleaningAndCleaning.ApplicationStates.OptionsState.OptionsState;
 import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
@@ -65,6 +66,13 @@ public class MainMenuState extends AbstractApplicationState {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 stateMachine.transitionToState(ChoosingDifficultyState.getInstance());
+            }
+        });
+
+        options.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                stateMachine.transitionToState(OptionsState.getInstance());
             }
         });
 

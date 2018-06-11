@@ -2,6 +2,7 @@ package com.CheapCleaningAndCleaning.ApplicationStates;
 
 import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingDifficultyState.ChoosingDifficultyState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ChoosingSaveState.ChoosingSaveState;
+import com.CheapCleaningAndCleaning.ApplicationStates.OptionsState.OptionsState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PreviousState.PreviousState;
 import com.CheapCleaningAndCleaning.State.StackStateMachine;
@@ -58,24 +59,29 @@ public class ApplicationStackStateMachine extends StackStateMachine<Game, Abstra
         AbstractApplicationState theNextState = nextState;
         nextState = null;
 
-        if (theNextState == PreviousState.getInstance()) {
+        if (theNextState instanceof PreviousState) {
             super.revertToPreviousState();
             getCurrentState().setInputProcessor();
             return;
         }
 
-        if (theNextState == PlayingState.getInstance()) {
+        if (theNextState instanceof PlayingState) {
             clearStack();
             putState(theNextState);
             return;
         }
 
-        if (theNextState == ChoosingSaveState.getInstance()) {
+        if (theNextState instanceof ChoosingSaveState) {
             putState(theNextState);
             return;
         }
 
-        if (theNextState == ChoosingDifficultyState.getInstance()) {
+        if (theNextState instanceof ChoosingDifficultyState) {
+            putState(theNextState);
+            return;
+        }
+
+        if (theNextState instanceof OptionsState) {
             putState(theNextState);
             return;
         }

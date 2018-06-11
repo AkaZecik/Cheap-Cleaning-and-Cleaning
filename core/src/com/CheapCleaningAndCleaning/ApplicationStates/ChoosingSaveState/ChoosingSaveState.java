@@ -78,7 +78,7 @@ public class ChoosingSaveState extends AbstractApplicationState {
         ChangeListener listener = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                stateMachine.transitionToState(PlayingState.getInstance());
+                stateMachine.transitionToState(PlayingState.getInstance(""));
             }
         };
 

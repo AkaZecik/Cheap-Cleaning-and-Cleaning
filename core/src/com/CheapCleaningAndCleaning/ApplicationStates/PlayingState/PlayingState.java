@@ -16,16 +16,18 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 public class PlayingState extends AbstractApplicationState {
     private Player player;
+    private String song;
     private Music music;
     private BeatChecker currentBeat;
     private Map map;
 
-    private PlayingState(ApplicationStackStateMachine stateMachine) {
+    private PlayingState(ApplicationStackStateMachine stateMachine, String song) {
         super(stateMachine);
+        this.song = song;
     }
 
-    public static PlayingState getInstance() {
-        return InstanceHolder.instance;
+    public static PlayingState getInstance(String song) {
+        return new PlayingState(CheapCleaningAndCleaning.getStateMachine(), song);
     }
 
     @Override
@@ -100,9 +102,5 @@ public class PlayingState extends AbstractApplicationState {
     public void render() {
         super.render();
         currentBeat.render(stage.getBatch());
-    }
-
-    private static class InstanceHolder {
-        static PlayingState instance = new PlayingState(CheapCleaningAndCleaning.getStateMachine());
     }
 }
