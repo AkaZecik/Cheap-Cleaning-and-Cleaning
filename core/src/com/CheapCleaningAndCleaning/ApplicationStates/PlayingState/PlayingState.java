@@ -5,6 +5,7 @@ import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuStat
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BPMcalc;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.BeatChecker;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic.SongDatabase;
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.BPMhud.BPMhud;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Map.Map;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player.Player;
 import com.badlogic.gdx.Game;
@@ -120,6 +121,8 @@ public class PlayingState extends AbstractApplicationState {
 
         map = new Map(player);
         stage.addActor(map);
+        BPMhud bPMhud = new BPMhud(BPM);
+        stage.addActor(bPMhud);
 
         map.setZIndex(0);
     }
