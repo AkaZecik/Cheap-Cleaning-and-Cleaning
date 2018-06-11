@@ -4,6 +4,7 @@ import com.CheapCleaningAndCleaning.ApplicationStates.AbstractApplicationState;
 import com.CheapCleaningAndCleaning.ApplicationStates.ApplicationStackStateMachine;
 import com.CheapCleaningAndCleaning.ApplicationStates.PreviousState.PreviousState;
 import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
+import com.CheapCleaningAndCleaning.GlobalFunctions;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class OptionsState extends AbstractApplicationState {
@@ -34,7 +35,7 @@ public class OptionsState extends AbstractApplicationState {
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
         try {
-            settings = loadSettings();
+            settings = GlobalFunctions.loadSettings();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,7 +95,7 @@ public class OptionsState extends AbstractApplicationState {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 try {
-                    saveSettings(settings);
+                    GlobalFunctions.saveSettings(settings);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -102,38 +103,6 @@ public class OptionsState extends AbstractApplicationState {
                 stateMachine.transitionToState(PreviousState.getInstance());
             }
         });
-    }
-
-    private HashMap<String, String> loadSettings() throws IOException {
-        File toRead = new File("settings");
-        HashMap<String, String> settings = null;
-
-        if (toRead.createNewFile()) {
-            settings = new HashMap<>();
-            settings.put("volume", "100");
-            saveSettings(settings);
-        } else {
-            try (FileInputStream fis = new FileInputStream(toRead)) {
-                try (ObjectInputStream ois = new ObjectInputStream(fis)) {
-                    settings = (HashMap<String, String>) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return settings;
-    }
-
-    private void saveSettings(HashMap<String, String> settings) throws IOException {
-        File toWrite = new File("settings");
-
-        try (FileOutputStream fos = new FileOutputStream(toWrite)) {
-            try (ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-                oos.writeObject(settings);
-                oos.flush();
-            }
-        }
     }
 
     private static class InstanceHolder {
