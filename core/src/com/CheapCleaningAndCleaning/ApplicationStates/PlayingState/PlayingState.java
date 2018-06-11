@@ -53,6 +53,7 @@ public class PlayingState extends AbstractApplicationState {
         });
         String name = "test.mp3";
         SongDatabase sd = null;
+
         try {
             sd = new SongDatabase();
         } catch (IOException e) {
@@ -60,7 +61,9 @@ public class PlayingState extends AbstractApplicationState {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
         double BPM = -1.0;
+
         try {
             BPM = sd.find(name);
         } catch (IOException e) {
@@ -85,8 +88,6 @@ public class PlayingState extends AbstractApplicationState {
             }
         }
 
-        currentBeat = new BeatChecker(BPM);
-        currentBeat.start();
         player = new Player();
         player.addListener(new InputListener() {
             @Override
@@ -111,10 +112,12 @@ public class PlayingState extends AbstractApplicationState {
             }
         });
 
+        currentBeat = new BeatChecker(BPM);
         music = Gdx.audio.newMusic(Gdx.files.internal("music/" + name));
         music.setLooping(true);
         music.setVolume(0.1f);
         music.play();
+        currentBeat.start();
 
         stage.addActor(player);
         stage.setKeyboardFocus(player);

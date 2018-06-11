@@ -36,8 +36,12 @@ public class BPMhud extends GameObject {
         float denominator = (float) interval;
         float scale = numerator / denominator;
 
-        if (scale > 0.5) batch.draw(texture2, -64 * scale, -136 + (-64 * scale), 128 * scale, 128 * scale);
-        else batch.draw(texture3, -64 * scale, -136 + (-64 * scale), 128 * scale, 128 * scale);
+        if (scale > 0.5) {
+            batch.draw(texture2, -64 * scale, -136 + (-64 * scale), 128 * scale, 128 * scale);
+        } else {
+            batch.draw(texture3, -64 * scale, -136 + (-64 * scale), 128 * scale, 128 * scale);
+        }
+
         batch.draw(texture1, -64, -200);
     }
 }
