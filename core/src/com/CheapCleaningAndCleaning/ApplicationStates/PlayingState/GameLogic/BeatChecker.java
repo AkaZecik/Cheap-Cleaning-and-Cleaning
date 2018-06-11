@@ -7,14 +7,17 @@ public class BeatChecker extends Thread {
     private long interval;
     private boolean used = false;
     private boolean allow = true;
+    private long first = 11 * interval / 12;
 
     public BeatChecker(double BPM) {
         interval = (long) (30000 / BPM);
     }
 
     public void run() {
+        used = false;
+        allow = true;
         try {
-            sleep(11*interval/12);
+            sleep(first);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -40,5 +43,15 @@ public class BeatChecker extends Thread {
         BitmapFont font = new BitmapFont();
         font.draw(batch, String.valueOf(allow),400,400);
         batch.end();
+    }
+
+    public void countFirstBeat() {
+        long start = System.nanoTime();
+        while (!used) {
+            ;
+        }
+        long end = System.nanoTime();
+        first = end - start + interval / 2;
+        first = first % (2 * interval);
     }
 }

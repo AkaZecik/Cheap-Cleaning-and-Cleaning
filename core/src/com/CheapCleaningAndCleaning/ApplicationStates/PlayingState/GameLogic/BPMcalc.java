@@ -126,19 +126,20 @@ public class BPMcalc {
     public long[] readSamples() throws IOException {
         long value = 0L;
 
-        long[] res = new long[2];
+        int bytesPerSample = (int) Math.ceil(audioInputStream.getFormat().getSampleSizeInBits() / 8);
+        long[] res = new long[bytesPerSample];
 
         int bufferPointer = 0;
         int bytesRead = 0;
-        byte[] buffer = new byte[4];
-        int bytesPerSample = (int) Math.ceil(audioInputStream.getFormat().getSampleSizeInBits() / 8);
+        byte[] buffer = new byte[2 * bytesPerSample];
+
         for (int b = 0; b < 2 * bytesPerSample; b++) {
             if (b == bytesPerSample) {
                 res[0] = value;
                 value = 0;
             }
             if (bufferPointer == bytesRead) {
-                int read = audioInputStream.read(buffer, 0, 4);
+                int read = audioInputStream.read(buffer, 0, 2 * bytesPerSample);
                 if (read == -1) throw new RuntimeException();
                 bytesRead = read;
                 bufferPointer = 0;
@@ -148,7 +149,7 @@ public class BPMcalc {
             int byteValue = buffer[bufferPointer];
             if (b < bytesPerSample - 1 || bytesPerSample == 1)
                 byteValue = byteValue & 0xFF;
-            value = value + (byteValue << (b % 2 * 8));
+            value = value + (byteValue << ((b % bytesPerSample) * 8));
 
             bufferPointer = bufferPointer + 1;
 

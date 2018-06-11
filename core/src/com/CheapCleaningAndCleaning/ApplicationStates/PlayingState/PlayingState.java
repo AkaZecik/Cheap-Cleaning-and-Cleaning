@@ -67,7 +67,7 @@ public class PlayingState extends AbstractApplicationState {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SongDatabase.SongNotFoundException e) {
-            Path path = Paths.get("core/assets/music/" + name);
+            Path path = Paths.get("music/" + name);
             try {
                 BPM = new BPMcalc(AudioSystem.getAudioInputStream(path.toFile()), 131072).bpm();
             } catch (IOException e1) {
