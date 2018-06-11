@@ -62,3 +62,6 @@ build/
 
 ## OS Specific
 .DS_Store
+
+## Application settings
+core/assets/settings
