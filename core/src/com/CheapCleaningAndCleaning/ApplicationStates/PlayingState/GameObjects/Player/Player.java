@@ -1,11 +1,14 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Player;
 
+import com.CheapCleaningAndCleaning.ApplicationStates.MainMenuState.MainMenuState;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.GameObject;
 import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameObjects.Map.Map;
+import com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.PlayingState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import sun.applet.Main;
 
 public class Player extends GameObject {
     public float getPositionX() {
@@ -26,6 +29,12 @@ public class Player extends GameObject {
 
     public void setPositionY(float positionY) {
         this.positionY = positionY;
+    }
+
+    private PlayingState playingState;
+
+    public Player(PlayingState state){
+        playingState=state;
     }
 
     private float positionX = 0;
@@ -162,6 +171,7 @@ public class Player extends GameObject {
         }
         if (map.map[(int) positionY][(int) positionX] == 3 && map.pointCounter==0) {
             System.out.println("KONIEC");
+            playingState.nextState=MainMenuState.getInstance();
             //ZROBIC KONIEC
         }
     }

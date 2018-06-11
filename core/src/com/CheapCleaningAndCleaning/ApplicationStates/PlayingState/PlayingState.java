@@ -45,7 +45,7 @@ public class PlayingState extends AbstractApplicationState {
         });
         currentBeat = new BeatChecker(100);
         currentBeat.start();
-        player = new Player();
+        player = new Player(this);
         player.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
