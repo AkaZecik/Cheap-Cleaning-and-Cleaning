@@ -2,7 +2,7 @@
 Let's clean!
 ---
 
-Jeżeli chcemy dodać własną muzykę do gry to musi ona być w formacie `wav` oraz mieć 16bit/sample. Jeżeli uruchamiamy aplikację z widoku okienkowego, to powinna się ona znaleźć w folderze o nazwie `music`, który z kolei powinien znajdować się w folderze home użytkownika (`~` na linuxie).
+Jeżeli chcemy dodać własną muzykę do gry to musi ona być w formacie `wav` oraz mieć 16bit/sample. Jeżeli uruchamiamy aplikację z widoku okienkowego, to powinna się ona znaleźć w folderze o nazwie `music`, który z kolei powinien znajdować się w folderze home użytkownika (`~` na linuxie). Natomiast jak uruchamiamy z terminala, to musimy podać mu ścieżkę do `~`, albo umieścić własne utwory w folderze `music` równoległym do pliku `.jar`.
 
 Dystrybucja pracy była równomierna. Każdy z nas wykonał 1/3 projektu. Dodatkowo podzieliliśmy się zadaniami w następujący sposób:
 * Jędrzej Kula
