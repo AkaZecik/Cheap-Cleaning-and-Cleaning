@@ -1,5 +1,7 @@
 package com.CheapCleaningAndCleaning.ApplicationStates.PlayingState.GameLogic;
 
+import com.badlogic.gdx.Gdx;
+
 import java.io.*;
 import java.util.HashMap;
 
@@ -13,8 +15,17 @@ public class SongDatabase {
     }
 
     public SongDatabase() throws IOException, ClassNotFoundException {
-        File toRead = new File("music/SongsBPM");
-        FileInputStream fis = new FileInputStream(toRead);
+//        File toRead = new File("music/SongsBPM");
+//        FileInputStream fis = new FileInputStream(toRead);
+//        ObjectInputStream ois = new ObjectInputStream(fis);
+//        fileMap = ((HashMap<String, Double>) ois.readObject());
+//
+//        ois.close();
+//        fis.close();
+
+        InputStream fis = Gdx.files.internal("music/SongsBPM").read();
+        //File toRead = new File("music/SongsBPM");
+        //FileInputStream fis = new FileInputStream(toRead);
         ObjectInputStream ois = new ObjectInputStream(fis);
         fileMap = ((HashMap<String, Double>) ois.readObject());
 
@@ -23,8 +34,18 @@ public class SongDatabase {
     }
 
     public void update() throws IOException {
-        File toWrite = new File("music/SongsBPM");
-        FileOutputStream fos = new FileOutputStream(toWrite);
+//        File toWrite = new File("music/SongsBPM");
+//        FileOutputStream fos = new FileOutputStream(toWrite);
+//        ObjectOutputStream oos = new ObjectOutputStream(fos);
+//
+//        oos.writeObject(fileMap);
+//        oos.flush();
+//        oos.close();
+//        fos.close();
+
+
+        OutputStream fos = Gdx.files.internal("music/SongsBPM").write(true, 0);
+        //FileOutputStream fos = new FileOutputStream(toWrite);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
 
         oos.writeObject(fileMap);
