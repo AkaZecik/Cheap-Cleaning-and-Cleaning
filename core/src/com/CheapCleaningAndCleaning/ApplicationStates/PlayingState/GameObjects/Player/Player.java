@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.util.HashMap;
+
 public class Player extends GameObject {
     public Map map;
     private ApplicationStackStateMachine stateMachine;
@@ -19,7 +21,12 @@ public class Player extends GameObject {
     private PlayerStates playerState = PlayerStates.STILL;
     private PlayerStates prevPlayerState = PlayerStates.STILL;
 
-    public Player(ApplicationStackStateMachine stateMachine) {
+    public Player(ApplicationStackStateMachine stateMachine, HashMap<String, String> setting) {
+        if(Boolean.valueOf(setting.get("micek"))) {
+            texture = new Texture(Gdx.files.internal("image/micek.jpeg"));
+        } else {
+            texture = new Texture(Gdx.files.internal("image/player.png"));
+        }
         this.stateMachine = stateMachine;
     }
 

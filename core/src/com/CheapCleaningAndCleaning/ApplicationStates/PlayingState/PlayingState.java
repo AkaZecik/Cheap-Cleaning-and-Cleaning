@@ -104,7 +104,7 @@ public class PlayingState extends AbstractApplicationState {
 //            }
         }
 
-        player = new Player(stateMachine);
+        player = new Player(stateMachine, settings);
         player.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {

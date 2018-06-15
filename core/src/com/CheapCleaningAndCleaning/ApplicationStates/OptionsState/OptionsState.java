@@ -104,7 +104,6 @@ public class OptionsState extends AbstractApplicationState {
 //            }
 //        });
 
-
         volume.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -123,7 +122,10 @@ public class OptionsState extends AbstractApplicationState {
         saveButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                settings.put("song", addSong.getText());
+                if (!addSong.getText().equals("")) {
+                    settings.put("song", addSong.getText());
+                }
+
                 settings.put("micek", String.valueOf(micek.isChecked()));
 
                 try {
