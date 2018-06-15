@@ -55,6 +55,12 @@ public class OptionsState extends AbstractApplicationState {
         final Slider volume = new Slider(0, 100, 1, false, skin);
         volume.setValue(Float.valueOf(settings.get("volume")));
 
+        TextField addSong = new TextField("", skin);
+        addSong.setMessageText("song name");
+
+        Label addSongLabel = new Label("Add song: ", skin);
+        addSongLabel.setWrap(true);
+
         ImageTextButton.ImageTextButtonStyle buttonStyle = new ImageTextButton.ImageTextButtonStyle(skin.get(TextButton.TextButtonStyle.class));
         ImageTextButton saveButton = new ImageTextButton("Save settings", buttonStyle);
         ImageTextButton backButton = new ImageTextButton("Back", buttonStyle);
@@ -68,6 +74,9 @@ public class OptionsState extends AbstractApplicationState {
         stage.addActor(table);
 //        table.setDebug(true); // DEBUG
 
+        table.add(addSongLabel).minWidth(100).fillX().pad(25).colspan(3);
+        table.add(addSong).minWidth(100).fillX().pad(25).colspan(3);
+        table.row();
         table.add(volumeLabel).minWidth(100).fillX().pad(25).colspan(2);
         table.add(volume).minWidth(200).fillX().pad(25).colspan(2);
         table.add(volumeValue).minWidth(50).fillX().pad(25).colspan(2);
