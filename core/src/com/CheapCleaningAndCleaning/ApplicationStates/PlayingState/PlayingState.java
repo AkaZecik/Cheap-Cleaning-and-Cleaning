@@ -129,6 +129,7 @@ public class PlayingState extends AbstractApplicationState {
         });
 
         currentBeat = new BeatChecker(BPM);
+//        System.out.println("music/" + name);
         music = Gdx.audio.newMusic(Gdx.files.internal("music/" + name));
         music.setLooping(true);
         music.setVolume(Float.valueOf(settings.get("volume")) / 100);
