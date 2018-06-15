@@ -66,7 +66,8 @@ public class PlayingState extends AbstractApplicationState {
             }
         });
 
-        String name = "test.mp3";
+        String name = settings.get("song");
+//        System.out.println(settings);
         SongDatabase sd = null;
 
         try {
@@ -94,16 +95,16 @@ public class PlayingState extends AbstractApplicationState {
             } catch (UnsupportedAudioFileException e1) {
                 e1.printStackTrace();
             }
-            try {
-                sd.add(name, BPM);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } catch (ClassNotFoundException e1) {
-                e1.printStackTrace();
-            }
+//            try {
+//                sd.add(name, BPM);
+//            } catch (IOException e1) {
+//                e1.printStackTrace();
+//            } catch (ClassNotFoundException e1) {
+//                e1.printStackTrace();
+//            }
         }
 
-        player = new Player(stateMachine);
+        player = new Player(stateMachine, settings);
         player.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
@@ -128,6 +129,7 @@ public class PlayingState extends AbstractApplicationState {
         });
 
         currentBeat = new BeatChecker(BPM);
+//        System.out.println("music/" + name);
         music = Gdx.audio.newMusic(Gdx.files.internal("music/" + name));
         music.setLooping(true);
         music.setVolume(Float.valueOf(settings.get("volume")) / 100);
@@ -137,7 +139,7 @@ public class PlayingState extends AbstractApplicationState {
         stage.addActor(player);
         stage.setKeyboardFocus(player);
 
-        map = new Map(player);
+        map = new Map(player, settings);
         stage.addActor(map);
         BPMhud bPMhud = new BPMhud(currentBeat, BPM);
         stage.addActor(bPMhud);

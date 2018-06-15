@@ -11,6 +11,9 @@ public abstract class GlobalFunctions {
         if (toRead.createNewFile()) {
             settings = new HashMap<>();
             settings.put("volume", "100");
+            settings.put("song", "test.mp3");
+            settings.put("micek", "false");
+            settings.put("map", "1.json");
             saveSettings(settings);
         } else {
             try (FileInputStream fis = new FileInputStream(toRead)) {
