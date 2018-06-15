@@ -9,17 +9,26 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.util.HashMap;
+
 public class Player extends GameObject {
     public Map map;
     private ApplicationStackStateMachine stateMachine;
     private float positionX = 0;
     private float positionY = 0;
     private float direction = 0;
-    private Texture texture = new Texture(Gdx.files.internal("image/player.png"));
+    private Texture texture = new Texture(Gdx.files.internal("image/micek.jpeg"));
     private PlayerStates playerState = PlayerStates.STILL;
     private PlayerStates prevPlayerState = PlayerStates.STILL;
+    private HashMap<String, String> settings;
 
-    public Player(ApplicationStackStateMachine stateMachine) {
+    public Player(ApplicationStackStateMachine stateMachine, HashMap<String, String> settings) {
+        this.settings = settings;
+        if(Boolean.valueOf(settings.get("micek"))) {
+            texture = new Texture(Gdx.files.internal("image/micek.jpeg"));
+        } else {
+            texture = new Texture(Gdx.files.internal("image/player.png"));
+        }
         this.stateMachine = stateMachine;
     }
 
@@ -40,7 +49,11 @@ public class Player extends GameObject {
     }
 
     public int getSize() {
-        return 128;
+        if(settings.get("map").equals("1.json")) {
+            return 64;
+        } else {
+            return 32;
+        }
     }
 
     @Override

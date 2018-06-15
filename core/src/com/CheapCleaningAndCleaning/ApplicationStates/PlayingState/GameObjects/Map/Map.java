@@ -9,21 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Json;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 
 public class Map extends Actor {
-    private ArrayList<Texture> textures=new ArrayList<>();
-    private Player player;
     public Integer[][] map;
     public Integer pointCounter;
+    private ArrayList<Texture> textures = new ArrayList<>();
+    private Player player;
+    private HashMap<String, String> settings;
 
-    static class MapParser {
-        Integer[][] map;
-        int playerX;
-        int playerY;
-    }
-
-    public Map(Player player) {
+    public Map(Player player, HashMap<String, String> settings) {
+        this.settings = settings;
         FileHandle folder = Gdx.files.internal("image/tiles");
         int i = 0;
         while (true) {
@@ -35,15 +31,18 @@ public class Map extends Actor {
             i++;
         }
 
+        FileHandle image = folder.child("krawczyk.jpeg");
+        textures.add(new Texture(image));
+
         this.player = player;
-        this.player.map=this;
+        this.player.map = this;
         Json json = new Json();
-        MapParser mapParser = json.fromJson(MapParser.class, Gdx.files.internal("maps/1.json").readString());
+        MapParser mapParser = json.fromJson(MapParser.class, Gdx.files.internal("maps/" + settings.get("map")).readString());
         map = mapParser.map;
-        pointCounter=0;
-        for(int j=0;j<map.length;j++){
-            for(int k=0;k<map[j].length;k++){
-                if(map[j][k]==2){
+        pointCounter = 0;
+        for (int j = 0; j < map.length; j++) {
+            for (int k = 0; k < map[j].length; k++) {
+                if (map[j][k] == 2) {
                     pointCounter++;
                 }
             }
@@ -66,9 +65,21 @@ public class Map extends Actor {
                     continue;
                 }
                 int tile = map[renderY][renderX];
-                Texture texture = textures.get(tile);
+                Texture texture = null;
+
+                if (tile == 3 && settings.get("micek").equals("true")) {
+                    texture = textures.get(4);
+                } else {
+                    texture = textures.get(tile);
+                }
                 batch.draw(texture, i * player.getSize(), j * player.getSize(), player.getSize(), player.getSize());
             }
         }
+    }
+
+    static class MapParser {
+        Integer[][] map;
+        int playerX;
+        int playerY;
     }
 }

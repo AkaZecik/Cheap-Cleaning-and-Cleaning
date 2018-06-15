@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,6 +56,25 @@ public class OptionsState extends AbstractApplicationState {
         final Slider volume = new Slider(0, 100, 1, false, skin);
         volume.setValue(Float.valueOf(settings.get("volume")));
 
+        Label micekLabel = new Label("Use special skin: ", skin);
+        micekLabel.setWrap(true);
+
+        CheckBox micek = new CheckBox("", skin);
+        micek.setChecked(Boolean.valueOf(settings.get("micek")));
+        micek.align(Align.right);
+
+        TextField chooseMap = new TextField("", skin);
+        chooseMap.setMessageText("map name");
+
+        Label chooseMapLabel = new Label("Choose map: ", skin);
+        chooseMapLabel.setWrap(true);
+
+        TextField addSong = new TextField("", skin);
+        addSong.setMessageText("song name");
+
+        Label addSongLabel = new Label("Choose song: ", skin);
+        addSongLabel.setWrap(true);
+
         ImageTextButton.ImageTextButtonStyle buttonStyle = new ImageTextButton.ImageTextButtonStyle(skin.get(TextButton.TextButtonStyle.class));
         ImageTextButton saveButton = new ImageTextButton("Save settings", buttonStyle);
         ImageTextButton backButton = new ImageTextButton("Back", buttonStyle);
@@ -68,6 +88,15 @@ public class OptionsState extends AbstractApplicationState {
         stage.addActor(table);
 //        table.setDebug(true); // DEBUG
 
+        table.add(micekLabel).minWidth(100).fillX().pad(25).colspan(3);
+        table.add(micek).fillX().pad(25).colspan(3);
+        table.row();
+        table.add(chooseMapLabel).minWidth(100).fillX().pad(25).colspan(3);
+        table.add(chooseMap).minWidth(100).fillX().pad(25).colspan(3);
+        table.row();
+        table.add(addSongLabel).minWidth(100).fillX().pad(25).colspan(3);
+        table.add(addSong).minWidth(100).fillX().pad(25).colspan(3);
+        table.row();
         table.add(volumeLabel).minWidth(100).fillX().pad(25).colspan(2);
         table.add(volume).minWidth(200).fillX().pad(25).colspan(2);
         table.add(volumeValue).minWidth(50).fillX().pad(25).colspan(2);
@@ -75,6 +104,14 @@ public class OptionsState extends AbstractApplicationState {
         table.add(backButton).minWidth(200).colspan(3).pad(25).center();
         table.add(saveButton).minWidth(200).colspan(3).pad(25).center();
         table.pack();
+
+//        addSong.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                settings.put("song", String.valueOf(addSong.getText()));
+//                System.out.println(addSong.getText());
+//            }
+//        });
 
         volume.addListener(new ChangeListener() {
             @Override
@@ -94,6 +131,16 @@ public class OptionsState extends AbstractApplicationState {
         saveButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                if (!addSong.getText().equals("")) {
+                    settings.put("song", addSong.getText());
+                }
+
+                if (!chooseMap.getText().equals("")) {
+                    settings.put("map", chooseMap.getText());
+                }
+
+                settings.put("micek", String.valueOf(micek.isChecked()));
+
                 try {
                     GlobalFunctions.saveSettings(settings);
                 } catch (IOException e) {
