@@ -63,6 +63,12 @@ public class OptionsState extends AbstractApplicationState {
         micek.setChecked(Boolean.valueOf(settings.get("micek")));
         micek.align(Align.right);
 
+        TextField chooseMap = new TextField("", skin);
+        chooseMap.setMessageText("map name");
+
+        Label chooseMapLabel = new Label("Choose map: ", skin);
+        chooseMapLabel.setWrap(true);
+
         TextField addSong = new TextField("", skin);
         addSong.setMessageText("song name");
 
@@ -84,6 +90,9 @@ public class OptionsState extends AbstractApplicationState {
 
         table.add(micekLabel).minWidth(100).fillX().pad(25).colspan(3);
         table.add(micek).fillX().pad(25).colspan(3);
+        table.row();
+        table.add(chooseMapLabel).minWidth(100).fillX().pad(25).colspan(3);
+        table.add(chooseMap).minWidth(100).fillX().pad(25).colspan(3);
         table.row();
         table.add(addSongLabel).minWidth(100).fillX().pad(25).colspan(3);
         table.add(addSong).minWidth(100).fillX().pad(25).colspan(3);
@@ -124,6 +133,10 @@ public class OptionsState extends AbstractApplicationState {
             public void changed(ChangeEvent event, Actor actor) {
                 if (!addSong.getText().equals("")) {
                     settings.put("song", addSong.getText());
+                }
+
+                if (!chooseMap.getText().equals("")) {
+                    settings.put("map", chooseMap.getText());
                 }
 
                 settings.put("micek", String.valueOf(micek.isChecked()));

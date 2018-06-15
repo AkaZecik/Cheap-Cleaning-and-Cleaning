@@ -37,7 +37,7 @@ public class Map extends Actor {
         this.player = player;
         this.player.map = this;
         Json json = new Json();
-        MapParser mapParser = json.fromJson(MapParser.class, Gdx.files.internal("maps/1.json").readString());
+        MapParser mapParser = json.fromJson(MapParser.class, Gdx.files.internal("maps/" + settings.get("map")).readString());
         map = mapParser.map;
         pointCounter = 0;
         for (int j = 0; j < map.length; j++) {
