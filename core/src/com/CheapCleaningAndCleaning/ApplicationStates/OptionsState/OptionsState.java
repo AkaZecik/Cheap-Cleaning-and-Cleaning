@@ -104,6 +104,7 @@ public class OptionsState extends AbstractApplicationState {
 //            }
 //        });
 
+
         volume.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -123,6 +124,7 @@ public class OptionsState extends AbstractApplicationState {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 settings.put("song", addSong.getText());
+                settings.put("micek", String.valueOf(micek.isChecked()));
 
                 try {
                     GlobalFunctions.saveSettings(settings);
