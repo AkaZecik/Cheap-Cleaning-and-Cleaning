@@ -95,13 +95,13 @@ public class PlayingState extends AbstractApplicationState {
             } catch (UnsupportedAudioFileException e1) {
                 e1.printStackTrace();
             }
-            try {
-                sd.add(name, BPM);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } catch (ClassNotFoundException e1) {
-                e1.printStackTrace();
-            }
+//            try {
+//                sd.add(name, BPM);
+//            } catch (IOException e1) {
+//                e1.printStackTrace();
+//            } catch (ClassNotFoundException e1) {
+//                e1.printStackTrace();
+//            }
         }
 
         player = new Player(stateMachine);

@@ -31,7 +31,6 @@ public class SongDatabase {
         if (name == null) {
             throw new NullPointerException();
         }
-
         if (fileMap.get(name) == null) {
             throw new SongNotFoundException();
         } else {
