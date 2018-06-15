@@ -15,7 +15,7 @@ public class Player extends GameObject {
     private float positionX = 0;
     private float positionY = 0;
     private float direction = 0;
-    private Texture texture = new Texture(Gdx.files.internal("image/player.png"));
+    private Texture texture = new Texture(Gdx.files.internal("image/micek.jpeg"));
     private PlayerStates playerState = PlayerStates.STILL;
     private PlayerStates prevPlayerState = PlayerStates.STILL;
 
