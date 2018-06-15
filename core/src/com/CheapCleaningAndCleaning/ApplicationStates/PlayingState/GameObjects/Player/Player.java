@@ -50,7 +50,7 @@ public class Player extends GameObject {
 
     public int getSize() {
         if(settings.get("map").equals("1.json")) {
-            return 64;
+            return 128;
         } else {
             return 32;
         }

@@ -8,10 +8,7 @@ import com.CheapCleaningAndCleaning.ApplicationStates.OptionsState.OptionsState;
 import com.CheapCleaningAndCleaning.CheapCleaningAndCleaning;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -33,18 +30,6 @@ public class MainMenuState extends AbstractApplicationState {
         super.enter(entity);
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
         skin.getFont("default-font").getData().setScale(2f, 2f);
-
-        stage.addListener(new InputListener() {
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                if (keycode == Input.Keys.ESCAPE) {
-                    stateMachine.revertToPreviousState();
-                    return true;
-                }
-
-                return false;
-            }
-        });
 
         Table table = new Table();
         table.setFillParent(true);
