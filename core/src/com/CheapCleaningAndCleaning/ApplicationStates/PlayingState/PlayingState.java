@@ -139,7 +139,7 @@ public class PlayingState extends AbstractApplicationState {
         stage.addActor(player);
         stage.setKeyboardFocus(player);
 
-        map = new Map(player);
+        map = new Map(player, settings);
         stage.addActor(map);
         BPMhud bPMhud = new BPMhud(currentBeat, BPM);
         stage.addActor(bPMhud);
