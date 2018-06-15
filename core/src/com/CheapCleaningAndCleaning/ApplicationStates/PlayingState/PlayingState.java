@@ -66,7 +66,8 @@ public class PlayingState extends AbstractApplicationState {
             }
         });
 
-        String name = "test.mp3";
+        String name = settings.get("song");
+//        System.out.println(settings);
         SongDatabase sd = null;
 
         try {

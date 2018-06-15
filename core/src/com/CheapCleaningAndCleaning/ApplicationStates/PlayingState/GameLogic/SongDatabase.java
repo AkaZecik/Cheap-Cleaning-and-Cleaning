@@ -8,12 +8,6 @@ import java.util.HashMap;
 public class SongDatabase {
     HashMap<String, Double> fileMap;
 
-    public Double find(String name) throws IOException, NullPointerException, ClassNotFoundException {
-        if (name == null) throw new NullPointerException();
-        if (fileMap.get(name) == null) throw new SongNotFoundException();
-        else return fileMap.get(name);
-    }
-
     public SongDatabase() throws IOException, ClassNotFoundException {
 //        File toRead = new File("music/SongsBPM");
 //        FileInputStream fis = new FileInputStream(toRead);
@@ -33,6 +27,18 @@ public class SongDatabase {
         fis.close();
     }
 
+    public Double find(String name) throws IOException, NullPointerException, ClassNotFoundException {
+        if (name == null) {
+            throw new NullPointerException();
+        }
+
+        if (fileMap.get(name) == null) {
+            throw new SongNotFoundException();
+        } else {
+            return fileMap.get(name);
+        }
+    }
+
     public void update() throws IOException {
 //        File toWrite = new File("music/SongsBPM");
 //        FileOutputStream fos = new FileOutputStream(toWrite);
@@ -43,7 +49,6 @@ public class SongDatabase {
 //        oos.close();
 //        fos.close();
 
-
         OutputStream fos = Gdx.files.internal("music/SongsBPM").write(true, 0);
         //FileOutputStream fos = new FileOutputStream(toWrite);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -52,9 +57,6 @@ public class SongDatabase {
         oos.flush();
         oos.close();
         fos.close();
-    }
-
-    public class SongNotFoundException extends RuntimeException {
     }
 
     public Double add(String name, Double BPM) throws IOException, ClassNotFoundException {
@@ -67,6 +69,9 @@ public class SongDatabase {
         Double val = fileMap.remove(name);
         update();
         return val;
+    }
+
+    public class SongNotFoundException extends RuntimeException {
     }
 }
 

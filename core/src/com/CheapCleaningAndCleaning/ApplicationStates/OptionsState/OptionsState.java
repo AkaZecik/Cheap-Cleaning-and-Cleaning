@@ -58,7 +58,7 @@ public class OptionsState extends AbstractApplicationState {
         TextField addSong = new TextField("", skin);
         addSong.setMessageText("song name");
 
-        Label addSongLabel = new Label("Add song: ", skin);
+        Label addSongLabel = new Label("Choose song: ", skin);
         addSongLabel.setWrap(true);
 
         ImageTextButton.ImageTextButtonStyle buttonStyle = new ImageTextButton.ImageTextButtonStyle(skin.get(TextButton.TextButtonStyle.class));
@@ -85,6 +85,14 @@ public class OptionsState extends AbstractApplicationState {
         table.add(saveButton).minWidth(200).colspan(3).pad(25).center();
         table.pack();
 
+//        addSong.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                settings.put("song", String.valueOf(addSong.getText()));
+//                System.out.println(addSong.getText());
+//            }
+//        });
+
         volume.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -103,6 +111,8 @@ public class OptionsState extends AbstractApplicationState {
         saveButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                settings.put("song", addSong.getText());
+
                 try {
                     GlobalFunctions.saveSettings(settings);
                 } catch (IOException e) {
