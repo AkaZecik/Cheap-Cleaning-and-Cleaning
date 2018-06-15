@@ -12,6 +12,7 @@ public abstract class GlobalFunctions {
             settings = new HashMap<>();
             settings.put("volume", "100");
             settings.put("song", "test.mp3");
+            settings.put("micek", "false");
             saveSettings(settings);
         } else {
             try (FileInputStream fis = new FileInputStream(toRead)) {

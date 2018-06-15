@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,6 +56,13 @@ public class OptionsState extends AbstractApplicationState {
         final Slider volume = new Slider(0, 100, 1, false, skin);
         volume.setValue(Float.valueOf(settings.get("volume")));
 
+        Label micekLabel = new Label("Use special skin: ", skin);
+        micekLabel.setWrap(true);
+
+        CheckBox micek = new CheckBox("", skin);
+        micek.setChecked(Boolean.valueOf(settings.get("micek")));
+        micek.align(Align.right);
+
         TextField addSong = new TextField("", skin);
         addSong.setMessageText("song name");
 
@@ -74,6 +82,9 @@ public class OptionsState extends AbstractApplicationState {
         stage.addActor(table);
 //        table.setDebug(true); // DEBUG
 
+        table.add(micekLabel).minWidth(100).fillX().pad(25).colspan(3);
+        table.add(micek).fillX().pad(25).colspan(3);
+        table.row();
         table.add(addSongLabel).minWidth(100).fillX().pad(25).colspan(3);
         table.add(addSong).minWidth(100).fillX().pad(25).colspan(3);
         table.row();
